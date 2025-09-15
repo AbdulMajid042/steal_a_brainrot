@@ -41,6 +41,11 @@ namespace Firebase.Sample.Analytics
         [SerializeField] string enableSelectionScreens;
         [SerializeField] string appOpenAfterInter;
         [SerializeField] string appOpenCountAfterInter;
+
+        [SerializeField] string occurance;
+        [SerializeField] string needAppOpen;
+
+
         //[SerializeField] string AdsEnable;
         //[SerializeField] string funBooth;
         private void Awake()
@@ -273,6 +278,10 @@ namespace Firebase.Sample.Analytics
             AdsManagerWrapper.Instance.enableSelection = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(enableSelectionScreens).BooleanValue;
             AdsManagerWrapper.Instance.appOpenAfterIad = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(appOpenAfterInter).BooleanValue;
             AdsManagerWrapper.Instance.appOpenCount = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(appOpenCountAfterInter).LongValue;
+
+            AdmobeAdsManager.instance.occurance = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(occurance).LongValue;
+            AdmobeAdsManager.instance.needAppOpen = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(needAppOpen).BooleanValue;
+
 
             Debug.Log($"[After Fetch] Inter Ad Time = {AdsManagerWrapper.Instance.idleAdTime}");
             Debug.Log($"[After Fetch] Inter Grace AdTime = {AdsManagerWrapper.Instance.InterGraceTime}");

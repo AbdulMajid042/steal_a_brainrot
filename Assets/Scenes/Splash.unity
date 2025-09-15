@@ -820,12 +820,48 @@ PrefabInstance:
       value: bcc6c1b92066c55d
       objectReference: {fileID: 0}
     - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: ADsDisable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
       propertyPath: RewardedID
       value: a98ae3f2dcdba0a4
       objectReference: {fileID: 0}
     - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
       propertyPath: RectBannerID
       value: a5cb10caf2ea4475
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: CPMRec.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: CPinter.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: CPSmallBanner.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 759551095168408990, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147495030154049315, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5983835023403613420, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5983835024378120828, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5983835025254009510, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6328191127752874386, guid: fc911260652cc5f47a20cadba2008988, type: 3}
       propertyPath: m_LocalPosition.x
@@ -870,6 +906,10 @@ PrefabInstance:
     - target: {fileID: 6328191127752874387, guid: fc911260652cc5f47a20cadba2008988, type: 3}
       propertyPath: m_Name
       value: MaxAdsManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962821794912545094, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -920,15 +960,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1191341142}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbc17bb08e1708e47afd27b8c89baf5a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e28ee496d1bae74f8c9420110658b0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interstitialAdUnitId: ca-app-pub-3940256099942544/1033173712
-  interstitialAdUnitId2: ca-app-pub-3940256099942544/8691691433
-  rewardedAdUnitId: ca-app-pub-3940256099942544/5224354917
-  bannerAdUnitId: ca-app-pub-3940256099942544/6300978111
-  mrecAdUnitId: ca-app-pub-3940256099942544/6300978111
-  appOpenAdUnitId: ca-app-pub-3940256099942544/3419835294
+  interstitialAdUnitId: ca-app-pub-6263347419612757/2229331957
+  interstitialAdUnitId2: ca-app-pub-6263347419612757/2229331957
+  rewardedAdUnitId: ca-app-pub-6263347419612757/7984275418
+  bannerAdUnitId: ca-app-pub-6263347419612757/9808439079
+  mrecAdUnitId: ca-app-pub-6263347419612757/8683931809
+  appOpenAdUnitId: ca-app-pub-6263347419612757/4936258485
+  occurance: 2
+  needAppOpen: 0
 --- !u!114 &1191341145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,7 +980,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1191341142}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0a240e335216bd4fa1ac71c61867d45, type: 3}
+  m_Script: {fileID: 11500000, guid: 4903ac02c3ca3ae41979ff746483411a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isFirebaseRemoteConfigInit: 0
@@ -965,6 +1007,8 @@ MonoBehaviour:
   enableSelectionScreens: 
   appOpenAfterInter: 
   appOpenCountAfterInter: 
+  occurance: occurance
+  needAppOpen: needAppOpen
 --- !u!1 &1206591002
 GameObject:
   m_ObjectHideFlags: 0

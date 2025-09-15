@@ -4,7 +4,7 @@ public class Player : MonoBehaviour
 {
     public static Player instance;
     GameObject tempBuyButton;
-    public GameObject currentBrainrot,stolen;
+    public GameObject currentBrainrot,stolen,unlockable;
     public Transform playerInitialTransform;
     public Transform stolenBrainrotsTransform;
 
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
             {
                 if (other.GetComponentInParent<Brainrot>().isGeneratingMoney)
                     UIManager.instance.sell.SetActive(true);
-                if (other.GetComponentInParent<Brainrot>().generatedMoney > other.GetComponentInParent<Brainrot>().moneyGenerationValue * 5)
+                if (other.GetComponentInParent<Brainrot>().generatedMoney >= other.GetComponentInParent<Brainrot>().moneyGenerationValue * 1)
                 {
                     UIManager.instance.coinAttraction.SetActive(false);
                     UIManager.instance.coinAttraction.SetActive(true);
@@ -79,6 +79,24 @@ public class Player : MonoBehaviour
             {
                 UIManager.instance.unlockHouse.SetActive(true);
                 aiHouse = other.GetComponentInParent<AIHouse>();
+            }
+        }
+
+        if (other.gameObject.tag == "BuyCharacterTrigger")
+        {
+            if (UIManager.instance)
+            {
+                UIManager.instance.characterUnlockPanel.SetActive(true);
+                unlockable = other.GetComponentInParent<Brainrot>().gameObject;
+                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.characterName = other.GetComponentInParent<Brainrot>().name;
+                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.price = other.GetComponentInParent<Brainrot>().priceValue;
+                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.income = other.GetComponentInParent<Brainrot>().moneyGenerationValue;
+                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.rarity = other.GetComponentInParent<BuyThisCharacter>().rarity;
+                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.inAppPrice = other.GetComponentInParent<BuyThisCharacter>().inAppprice;
+                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.adsRequired = other.GetComponentInParent<BuyThisCharacter>().adsRequired;
+                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.adsWatched = other.GetComponentInParent<BuyThisCharacter>().adsWatched;
+                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.inAppString = other.GetComponentInParent<BuyThisCharacter>().inAppString;
+                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().UpdateUI();
             }
         }
     }

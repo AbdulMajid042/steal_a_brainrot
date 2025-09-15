@@ -14,7 +14,7 @@ public class Splash : MonoBehaviour
         PlayerPrefs.SetFloat("Sensitivity", 0.5f);
         if(PlayerPrefs.GetInt("FirseSession")==0)
         {
-            PlayerPrefs.SetInt("PlayerCurrency", 1000);
+        //    PlayerPrefs.SetInt("PlayerCurrency", 1000);
             PlayerPrefs.SetInt("FirseSession", 1);
 
         }

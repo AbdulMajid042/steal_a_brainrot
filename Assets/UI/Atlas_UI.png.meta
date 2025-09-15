@@ -1391,7 +1391,7 @@ TextureImporter:
         width: 137
         height: 141
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1399,6 +1399,111 @@ TextureImporter:
       bones: []
       spriteID: 243854fb1fdf40e4587657e28bc33c06
       internalID: -1495043814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_UI_PinkPanel2
+      rect:
+        serializedVersion: 2
+        x: 2898
+        y: 1062
+        width: 192
+        height: 281
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fd36bf8cc4a33945bb1d0544125b921
+      internalID: 1445247783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_UI_BluePanel2
+      rect:
+        serializedVersion: 2
+        x: 3117
+        y: 1062
+        width: 193
+        height: 282
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abd16f8176ea5c54f8b9f01b4b2448cb
+      internalID: 983866418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_UI_Treasure1
+      rect:
+        serializedVersion: 2
+        x: 2879
+        y: 808
+        width: 215
+        height: 194
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 830ce5405dc58dc42976e2f849bc6f07
+      internalID: -157198997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_UI_Treasure2
+      rect:
+        serializedVersion: 2
+        x: 3143
+        y: 818
+        width: 210
+        height: 190
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a7f0f3c0469a654d9334c646fd8b696
+      internalID: 409445766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_UI_VideoIcon2
+      rect:
+        serializedVersion: 2
+        x: 2861
+        y: 453
+        width: 320
+        height: 360
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cac523f7d4660c4f95d9de0e4620cd6
+      internalID: 312392687
       vertices: []
       indices: 
       edges: []
@@ -1422,6 +1527,7 @@ TextureImporter:
       Atlas_UI_BlackBar: 1315293456
       Atlas_UI_BlueBtn: -1860740784
       Atlas_UI_BluePanel: -667786982
+      Atlas_UI_BluePanel2: 983866418
       Atlas_UI_BlueSquare: -730804652
       Atlas_UI_Buy: 1456976936
       Atlas_UI_Coin: 2040228265
@@ -1454,6 +1560,7 @@ TextureImporter:
       Atlas_UI_No: -940136219
       Atlas_UI_NoAds: 1514975230
       Atlas_UI_PinkPanel: -675437600
+      Atlas_UI_PinkPanel2: 1445247783
       Atlas_UI_Play: 1133844415
       Atlas_UI_PurpleSquare: -2012859954
       Atlas_UI_Rate: -1976171039
@@ -1470,8 +1577,11 @@ TextureImporter:
       Atlas_UI_SliderYellow: -1878164731
       Atlas_UI_Sound: 723978677
       Atlas_UI_SquareBtn: -1000800673
+      Atlas_UI_Treasure1: -157198997
+      Atlas_UI_Treasure2: 409445766
       Atlas_UI_VerticalPanel: 1639536674
       Atlas_UI_VideoIcon: -1495043814
+      Atlas_UI_VideoIcon2: 312392687
       Atlas_UI_YellowBtn: 657456024
       Atlas_UI_YellowDiamond: 1663216867
       Atlas_UI_Yes: -1040183119

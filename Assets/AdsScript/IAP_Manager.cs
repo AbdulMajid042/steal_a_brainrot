@@ -1,20 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Purchasing;
+﻿using Firebase.Sample.Analytics;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
+using UnityEngine;
+using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
 using UnityEngine.SceneManagement;
-using Firebase.Sample.Analytics;
+using UnityEngine.UIElements;
 //using Demo_Project;
 
 #region InAppStructure
 public enum InAppItemName
 {
-    Coins,
     RemoveAds,
+    Saturnita,
+    Spiderini,
+    LosTralaleritos,
+    LasTralaleritos,
+    Medussi,
+    Combinasion,
+    Dinossauro,
+    Madundung,
+    Celestino,
+    Coins,
     Unlock_All_Levels,
     Unlock_All_Guns,
     Unlock_Everything,
@@ -80,6 +90,7 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
     {
         DontDestroyOnLoad(this);    
         Instance = this;
+        PlayerPrefs.SetInt("InAppClicked", 0);
     }
 
     private void OnEnable()
@@ -231,6 +242,11 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
         BuyProductID(nonConsumeableInApps[0].inAppId);
     }
 
+    public void BuyCharacter(string inAppName)
+    {
+        BuyProductID(inAppName);
+    }
+
     public void Unlock_All_Guns()
     {
         //BuyProductID("unlockguns");
@@ -276,6 +292,8 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                 Debug.Log(
                     "BuyProductID: FAIL. Not purchasing product, either is not found or is not available for purchase");
             }
+
+            PlayerPrefs.SetInt("InAppClicked", 1);
         }
         else
         {
@@ -301,11 +319,7 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                 {
                     if(args.purchasedProduct.definition.id == consumeableInApps[i].inAppId)
                     {
-                        //int coins = PlayerPrefs.GetInt(PlayerPrefStrings.Coins, 0);
-                        //coins += consumeableInApps[i].quantityToGive;
-                        //PlayerPrefs.SetInt(PlayerPrefStrings.Coins, coins);
-                        //MainMenuManager.instance.CoinRewardNotification("Congratulations! You have purchased " + consumeableInApps[i].quantityToGive + " coins.");
-                        //MainMenuManager.instance.UpdateCoins()/*;*/
+                        
                     }
                 }
             }
@@ -324,6 +338,38 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GRS_FirebaseHandler.Instance.LogIAPPurchased("RemoveAds");
                     iapNumber = 1;
                     WaitIAP();
+                }
+                if (nonConsumableSucceededInapp.inAppType == InAppItemName.Saturnita)
+                {
+                    GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
+                }
+                if (nonConsumableSucceededInapp.inAppType == InAppItemName.Spiderini)
+                {
+                    GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
+                }
+                if (nonConsumableSucceededInapp.inAppType == InAppItemName.LosTralaleritos)
+                {
+                    GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
+                }
+                if (nonConsumableSucceededInapp.inAppType == InAppItemName.LasTralaleritos)
+                {
+                    GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
+                }
+                if (nonConsumableSucceededInapp.inAppType == InAppItemName.Medussi)
+                {
+                    GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
+                }
+                if (nonConsumableSucceededInapp.inAppType == InAppItemName.Combinasion)
+                {
+                    GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
+                }
+                if (nonConsumableSucceededInapp.inAppType == InAppItemName.Dinossauro)
+                {
+                    GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
+                }
+                if (nonConsumableSucceededInapp.inAppType == InAppItemName.Madundung)
+                {
+                    GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                 }
                 else if (nonConsumableSucceededInapp.inAppType == InAppItemName.Gun)
                 {

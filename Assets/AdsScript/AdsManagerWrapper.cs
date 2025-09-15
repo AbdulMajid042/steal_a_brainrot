@@ -1,4 +1,3 @@
-using Firebase.Analytics;
 using Firebase.Sample.Analytics;
 using SolarEngine;
 using System;
@@ -7,8 +6,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static MaxSdkBase;
-using static SolarEngine.Analytics;
 //using AppLovinMax.Scripts.IntegrationManager.Editor;
 //using AppLovinMax.Scripts.IntegrationManager.Editor;
 public enum AdType
@@ -67,7 +64,7 @@ public class AdsManagerWrapper : MonoBehaviour
 
 
 
-    
+
 
 
     //[Space]
@@ -88,14 +85,17 @@ public class AdsManagerWrapper : MonoBehaviour
     [HideInInspector] public long idleAdTime = 60;
     [HideInInspector] public long InterGraceTime = 30;
     [HideInInspector] public long loadingAdTextTime = 1;
-   /* [HideInInspector]*/ public long quizScreenCount = 4;
+    /* [HideInInspector]*/
+    public long quizScreenCount = 4;
     [HideInInspector] public bool thirdSlotlock = true;
     [HideInInspector] public bool fourthSlotlock = true;
     [HideInInspector] public bool showIapLoading = true;
     [HideInInspector] public bool enableQuiz = false;
     [HideInInspector] public bool enableSelection = true;
-    /*[HideInInspector] */public bool appOpenAfterIad = true;
-   /* [HideInInspector] */public long appOpenCount = 2;
+    /*[HideInInspector] */
+    public bool appOpenAfterIad = true;
+    /* [HideInInspector] */
+    public long appOpenCount = 2;
     [HideInInspector] public bool runAdsTimer = false;
     public GameObject checkInternetMsg;
     [HideInInspector] public float lastRemoveAdsTime;
@@ -106,7 +106,7 @@ public class AdsManagerWrapper : MonoBehaviour
 
     [HideInInspector] public long IAP_Attempts = 2; // break Point Attempts For Premium
     [HideInInspector] public int remainingAttempts = 0;
-    public GameObject inappPremium,noThanksBtn;
+    public GameObject inappPremium, noThanksBtn;
 
 
 
@@ -152,7 +152,7 @@ public class AdsManagerWrapper : MonoBehaviour
 
         Debug.Log("[unity] init click");
 
-        String AppKey = "b9f994c9186a3c0e";
+        String AppKey = "9d3971188b4471dd";
 
         SEConfig seConfig = new SEConfig();
         RCConfig rcConfig = new RCConfig();
@@ -166,7 +166,7 @@ public class AdsManagerWrapper : MonoBehaviour
         SolarEngine.Analytics.initSeSdk(AppKey, seConfig, rcConfig);
 
     }
-    
+
     public void OpenPremium()
     {
         StartCoroutine(OpenPremiumIAP());
@@ -178,7 +178,7 @@ public class AdsManagerWrapper : MonoBehaviour
         remainingAttempts = (int)IAP_Attempts;
         if (GRS_FirebaseHandler.Instance) GRS_FirebaseHandler.Instance.LogEventPlay("premium_panel_shown");
         yield return new WaitForSeconds(2);
-        noThanksBtn.SetActive(true);   
+        noThanksBtn.SetActive(true);
     }
     public void ShowCustomInterstitial()
     {
@@ -306,6 +306,34 @@ public class AdsManagerWrapper : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+        if (SystemInfo.systemMemorySize > 1024)
+        {
+            Debug.Log("GG >> System Memory is greater than 2048, Showing Ads");
+            adsStatus = AdType.Ads;
+
+            if (SystemInfo.systemMemorySize <= 4096)
+                QualitySettings.SetQualityLevel(1);
+            else
+                QualitySettings.SetQualityLevel(2);
+        }
+        else
+        {
+            //Debug.Log("GG >> System Memory is less than or equal to 1024, Not Showing Ads");
+            //adsStatus = AdType.NOAds;
+            //QualitySettings.SetQualityLevel(0);
+            Debug.Log("GG >> System Memory is greater than 2048, Showing Ads");
+            adsStatus = AdType.Ads;
+
+            if (SystemInfo.systemMemorySize <= 4096)
+                QualitySettings.SetQualityLevel(1);
+            else
+                QualitySettings.SetQualityLevel(2);
+        }
+
+
+
+
+
 
     }
     private void Start()
@@ -314,7 +342,7 @@ public class AdsManagerWrapper : MonoBehaviour
         SE_Initialize();
         PlayerPrefs.SetInt("firstQuiz", 0);
         timeForInterstitialAd = idleAdTime;
-        solidAdTime = timeForInterstitialAd+InterGraceTime;
+        solidAdTime = timeForInterstitialAd + InterGraceTime;
 
         welcomInter = false;
         //StartCoroutine(ShowDelayInterstitial());
@@ -354,7 +382,7 @@ public class AdsManagerWrapper : MonoBehaviour
         //if (/*SoundAPPManager.ins.*/timeForInterstitialAd <= 15)
         {
             /*SoundAPPManager.ins.*/
-            
+
             timeForInterstitialAd = idleAdTime;
             solidAdTime = timeForInterstitialAd + InterGraceTime;
         }
@@ -373,7 +401,7 @@ public class AdsManagerWrapper : MonoBehaviour
     public void BackOnline()
     {
         //if(!isAppLovinInitiallized)
-            //Initialize();
+        //Initialize();
         ReTryToInitialize();
         //ShowSmallBanner();
     }
@@ -530,13 +558,13 @@ public class AdsManagerWrapper : MonoBehaviour
 
         //if (showAdmobAppOpenNext)
         //{
-            //if (AdmobeAdsManager.instance != null && AdmobeAdsManager.instance.IsAppOpenAdReady())
-            {
-                Debug.Log("Showing AdMob AppOpen Ad");
-                ForeGroundedAD = true;
-                AdmobeAdsManager.instance.ShowAppOpenAd();
-                //GRS_FirebaseHandler.Instance.LogEventPlay("admob_appopen_shown");
-            }
+        //if (AdmobeAdsManager.instance != null && AdmobeAdsManager.instance.IsAppOpenAdReady())
+        {
+            Debug.Log("Showing AdMob AppOpen Ad");
+            ForeGroundedAD = true;
+            AdmobeAdsManager.instance.ShowAppOpenAd();
+            //GRS_FirebaseHandler.Instance.LogEventPlay("admob_appopen_shown");
+        }
         //    else
         //    {
         //        Debug.Log("AdMob AppOpen not loaded, fallback to MAX");
@@ -717,7 +745,7 @@ public class AdsManagerWrapper : MonoBehaviour
     {
         Logging.Log("GG >> AppLovin:mediumBanner:Clicked");
         AdsLogsHelper.Logs(Ads_Events.MediumBannerClicked);
-        
+
         SolarAdType adType = SolarAdType(arg2.AdFormat);
         trackAdClick(arg2, adType);
     }
@@ -780,20 +808,12 @@ public class AdsManagerWrapper : MonoBehaviour
         /* AdsManagerWrapper.Instance.*/
         OnInterstitialShown();
 
-        if (appOpenAfterIad)
-        {
-            if (appOpenCounter >= appOpenCount)
-            {
-                AdmobeAdsManager.instance.ShowAppOpenAd();
-                appOpenCount = 1;
-            }
-            else { appOpenCount++; }
-        }
-        
+        AdmobeAdsManager.instance.ShowAppOpenAfterInAppOrMaxInterstitial();
+
         isIdleTimeCompleted = false;
         //ResetTimer();
         timeForInterstitialAd = idleAdTime;
-        solidAdTime = timeForInterstitialAd+InterGraceTime;
+        solidAdTime = timeForInterstitialAd + InterGraceTime;
 
         if (GetAppOpenRemainingTime() <= 15)
         {
@@ -880,7 +900,7 @@ public class AdsManagerWrapper : MonoBehaviour
             {
                 /*SoundAPPManager.ins.*/
                 timeForInterstitialAd = 15;
-                solidAdTime = timeForInterstitialAd+InterGraceTime;
+                solidAdTime = timeForInterstitialAd + InterGraceTime;
             }
         }
 
@@ -1005,7 +1025,7 @@ public class AdsManagerWrapper : MonoBehaviour
         {
             /*SoundAPPManager.ins.*/
             timeForInterstitialAd = 15;
-            solidAdTime = timeForInterstitialAd + InterGraceTime    ;
+            solidAdTime = timeForInterstitialAd + InterGraceTime;
         }
 
 
@@ -1081,47 +1101,72 @@ public class AdsManagerWrapper : MonoBehaviour
     [HideInInspector] public BannerSource currentBanner = BannerSource.None;
     private bool showAdmobBannerNext = true; // toggle for alternating
 
-    public void ShowSmallBanner()
-    {
+    //public void ShowSmallBanner()
+    //{
 
-        Debug.Log("Show small banner called ");
+    //    Debug.Log("Show small banner called ");
+
+    //    if (!PreferenceManager.GetAdsStatus() || adsStatus == AdType.NOAds)
+    //        return;
+
+    //    if (!isAppLovinInitiallized)
+    //    {
+    //        GRS_FirebaseHandler.Instance.LogEventPlay("banner_call_offline");
+    //        return;
+    //    }
+
+    //    // Pick random 0 or 1 (50% chance each)
+    //    //bool showAdmobBanner = UnityEngine.Random.Range(0, 2) == 0;
+    //    HideCurrentBanner();
+    //    //if (showAdmobBanner)
+    //    //{
+    //    //    if (AdmobeAdsManager.instance != null /*&& AdmobeAdsManager.instance.IsBannerReady()*/)
+    //    //    {
+    //    //        Debug.Log("Showing AdMob Small Banner");
+    //    //        //AdmobeAdsManager.instance.ShowBanner();
+    //    //        AdmobeAdsManager.instance.LoadBanner();
+    //    //        currentBanner = BannerSource.AdMob;
+    //    //        GRS_FirebaseHandler.Instance.LogEventPlay("admob_banner_shown");
+    //    //    }
+    //    //    //else
+    //    //    //{
+    //    //    //    Debug.Log("AdMob Banner not ready, fallback to MAX");
+    //    //    //    ShowMaxBanner();
+    //    //    //    currentBanner = BannerSource.Max;
+    //    //    //}
+    //    //}
+    //    //else
+    //    //{
+    //    ShowMaxBanner();
+    //    currentBanner = BannerSource.Max;
+    //    //}
+
+    //    //showAdmobBannerNext = !showAdmobBannerNext;
+
+
+
+    //}
+    public void ShowSmallBanner(/*MaxSdkBase.BannerPosition AdPositio*/)
+    {
+        if (PlayerPrefs.GetInt("RemoveAds") == 1)
+            return;
 
         if (!PreferenceManager.GetAdsStatus() || adsStatus == AdType.NOAds)
             return;
 
-        if (!isAppLovinInitiallized)
+        if (isAppLovinInitiallized)
+        { MaxSdk.HideBanner(BannerID); }
+
+        Logging.Log("GG >> AppLovin:smallbanner:Showcall");
+        if (IsSmallBannerReady() || Application.isEditor)
         {
-            GRS_FirebaseHandler.Instance.LogEventPlay("banner_call_offline");
-            return;
+            isSBannerDisplayed = true;
+            MaxSdk.ShowBanner(BannerID);
         }
-
-        // Pick random 0 or 1 (50% chance each)
-        //bool showAdmobBanner = UnityEngine.Random.Range(0, 2) == 0;
-        HideCurrentBanner();
-        //if (showAdmobBanner)
-        //{
-        //    if (AdmobeAdsManager.instance != null /*&& AdmobeAdsManager.instance.IsBannerReady()*/)
-        //    {
-        //        Debug.Log("Showing AdMob Small Banner");
-        //        //AdmobeAdsManager.instance.ShowBanner();
-        //        AdmobeAdsManager.instance.LoadBanner();
-        //        currentBanner = BannerSource.AdMob;
-        //        GRS_FirebaseHandler.Instance.LogEventPlay("admob_banner_shown");
-        //    }
-        //    //else
-        //    //{
-        //    //    Debug.Log("AdMob Banner not ready, fallback to MAX");
-        //    //    ShowMaxBanner();
-        //    //    currentBanner = BannerSource.Max;
-        //    //}
-        //}
-        //else
-        //{
-            ShowMaxBanner();
-            currentBanner = BannerSource.Max;
-        //}
-
-        //showAdmobBannerNext = !showAdmobBannerNext;
+        else
+        {
+            Logging.Log("GG >> AppLovin:smallBanner:NotLoaded");
+        }
     }
     private void HideCurrentBanner()
     {
@@ -1166,7 +1211,7 @@ public class AdsManagerWrapper : MonoBehaviour
         }
         else
         {
-            if(AdmobeAdsManager.instance)
+            if (AdmobeAdsManager.instance)
                 AdmobeAdsManager.instance.ShowBanner();
             //Logging.Log("GG >> AppLovin:smallBanner:NotLoaded");
         }
@@ -1202,49 +1247,70 @@ public class AdsManagerWrapper : MonoBehaviour
     //}
     private bool showAdmobMediumBannerNext = false; // toggle flag
 
-    public void ShowMediumBanner()
+    //public void ShowMediumBanner()
+    //{
+    //    if (!PreferenceManager.GetAdsStatus() || adsStatus == AdType.NOAds)
+    //        return;
+
+    //    if (!isAppLovinInitiallized)
+    //    {
+    //        GRS_FirebaseHandler.Instance.LogEventPlay("Mrec_call_offline");
+    //        return;
+    //    }
+
+    //    // Always hide existing banners before showing new one
+    //    MaxSdk.HideMRec(RectBannerID);
+    //    if (AdmobeAdsManager.instance != null)
+    //        AdmobeAdsManager.instance.HideMediumBanner();
+
+    //    Debug.Log("Medium banner requested");
+
+    //    // Flip a coin (random 50/50 chance) OR use toggle flag
+    //    bool useAdmob = UnityEngine.Random.Range(0, 2) == 0;
+    //    // OR if you prefer toggle sequence, replace with:
+    //    // bool useAdmob = showAdmobMediumBannerNext;
+
+    //    //if (useAdmob)
+    //    //{
+    //    //    if (AdmobeAdsManager.instance != null /*&& AdmobeAdsManager.instance.IsMediumBannerReady()*/)
+    //    //    {
+    //    //        Debug.Log("Showing AdMob Medium Banner");
+    //    //        AdmobeAdsManager.instance.ShowMREC();
+    //    //        GRS_FirebaseHandler.Instance.LogEventPlay("admob_mrec_shown");
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        Debug.Log("AdMob Medium Banner not ready, fallback to MAX");
+    //    //        ShowMaxMediumBanner();
+    //    //    }
+    //    //}
+    //    //else
+    //    //{
+    //    ShowMaxMediumBanner();
+    //    //}
+
+    //    // showAdmobMediumBannerNext = !showAdmobMediumBannerNext;
+    //}
+
+    public void ShowMediumBanner(/*MaxSdkBase.AdViewPosition AdPosition*/)
     {
+        if (PlayerPrefs.GetInt("RemoveAds") == 1)
+            return;
+
         if (!PreferenceManager.GetAdsStatus() || adsStatus == AdType.NOAds)
             return;
 
-        if (!isAppLovinInitiallized)
+        if (isAppLovinInitiallized)
+        { MaxSdk.HideMRec(RectBannerID); }
+        if (IsMediumBannerReady() || Application.isEditor)
         {
-            GRS_FirebaseHandler.Instance.LogEventPlay("Mrec_call_offline");
-            return;
+            isMBannerDisplayed = true;
+            MaxSdk.ShowMRec(RectBannerID);
         }
-
-        // Always hide existing banners before showing new one
-        MaxSdk.HideMRec(RectBannerID);
-        if (AdmobeAdsManager.instance != null)
-            AdmobeAdsManager.instance.HideMediumBanner();
-
-        Debug.Log("Medium banner requested");
-
-        // Flip a coin (random 50/50 chance) OR use toggle flag
-        bool useAdmob = UnityEngine.Random.Range(0, 2) == 0;
-        // OR if you prefer toggle sequence, replace with:
-        // bool useAdmob = showAdmobMediumBannerNext;
-
-        //if (useAdmob)
-        //{
-        //    if (AdmobeAdsManager.instance != null /*&& AdmobeAdsManager.instance.IsMediumBannerReady()*/)
-        //    {
-        //        Debug.Log("Showing AdMob Medium Banner");
-        //        AdmobeAdsManager.instance.ShowMREC();
-        //        GRS_FirebaseHandler.Instance.LogEventPlay("admob_mrec_shown");
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("AdMob Medium Banner not ready, fallback to MAX");
-        //        ShowMaxMediumBanner();
-        //    }
-        //}
-        //else
-        //{
-            ShowMaxMediumBanner();
-        //}
-
-        // showAdmobMediumBannerNext = !showAdmobMediumBannerNext;
+        else
+        {
+            Logging.Log("GG >> AppLovin:mediumBanner:NotLoaded");
+        }
     }
 
     public void ShowMaxMediumBanner()
@@ -1262,7 +1328,7 @@ public class AdsManagerWrapper : MonoBehaviour
                 Debug.Log("Fallback: Showing AdMob MREC");
                 AdmobeAdsManager.instance.ShowMREC();
             }
-                Logging.Log("GG >> AppLovin:mediumBanner:NotLoaded");
+            Logging.Log("GG >> AppLovin:mediumBanner:NotLoaded");
         }
     }
 
@@ -1321,14 +1387,14 @@ public class AdsManagerWrapper : MonoBehaviour
     {
         //if (IsInterstitialAdReady())
         //{
-            //if (!startFading)
-            //{
-            //    startFading = true;
-            //    StartCoroutine(FadeInPopup(interstitialPopup.GetComponent<CanvasGroup>(), 1.5f));
-            //    interstitialPopup.SetActive(true);
-            //    adTimer.gameObject.SetActive(true);
+        //if (!startFading)
+        //{
+        //    startFading = true;
+        //    StartCoroutine(FadeInPopup(interstitialPopup.GetComponent<CanvasGroup>(), 1.5f));
+        //    interstitialPopup.SetActive(true);
+        //    adTimer.gameObject.SetActive(true);
 
-            //}
+        //}
         //}
 
         //adTimer.text = "AD IS LOADING...2 ";
@@ -1406,20 +1472,20 @@ public class AdsManagerWrapper : MonoBehaviour
         //}
         //else
         //{
-            Debug.Log("Showing MAX Interstitial");
-            if (IsInterstitialAdReady())
+        Debug.Log("Showing MAX Interstitial");
+        if (IsInterstitialAdReady())
+        {
+            ShowFallBackInterstitial();
+        }
+        else
+        {
+            Debug.Log("MAX interstitial not ready, fallback to AdMob");
+            if (AdmobeAdsManager.instance != null/* && AdmobeAdsManager.instance.IsInterstitial2Ready()*/)
             {
-                ShowFallBackInterstitial();
+                AdmobeAdsManager.instance.ShowInterstitial2();
             }
-            else
-            {
-                Debug.Log("MAX interstitial not ready, fallback to AdMob");
-                if (AdmobeAdsManager.instance != null/* && AdmobeAdsManager.instance.IsInterstitial2Ready()*/)
-                {
-                    AdmobeAdsManager.instance.ShowInterstitial2();
-                }
-                LoadInterstitial();
-            }
+            LoadInterstitial();
+        }
         //}
 
         //showAdmobNext = !showAdmobNext;
@@ -1430,14 +1496,6 @@ public class AdsManagerWrapper : MonoBehaviour
 
     public void ShowInterstitial()
     {
-        ResetTimer();
-        interstitialCount++;
-
-        if (interstitialCount == 2)
-        {
-            lastRemoveAdsTime = Time.time;
-        }
-
         if (!PreferenceManager.GetAdsStatus() || !isAppLovinInitiallized || adsStatus == AdType.NOAds)
         {
             if (!isAppLovinInitiallized)
@@ -1447,8 +1505,6 @@ public class AdsManagerWrapper : MonoBehaviour
                 return;
             }
         }
-        Logging.Log("GG >> AppLovin:iad:Showcall");
-        AdsLogsHelper.Logs(Ads_Events.ShowInterstitialAd);
         if (IsInterstitialAdReady())
         {
             Logging.Log("GG >> AppLovin:iad:WillDisplay");
@@ -1466,9 +1522,81 @@ public class AdsManagerWrapper : MonoBehaviour
             LoadInterstitial();
             //GRS_FirebaseHandler.Instance.LogEventPlay("interstitial not loaded");
         }
-
     }
+    public void ShowApplovinFirst()
+    {
+        if (PlayerPrefs.GetInt("RemoveAds") == 1)
+        {
+            return;
+        }
+        if (!PreferenceManager.GetAdsStatus() || !isAppLovinInitiallized || adsStatus == AdType.NOAds)
+        {
+            if (!isAppLovinInitiallized)
+            {
+                ReTryToInitialize();              //     TO CHECK INTERNET CONNECTION
+                GRS_FirebaseHandler.Instance.LogEventPlay("interstitial_call_Offline");
+                return;
+            }
+        }
+        if (IsInterstitialAdReady())
+        {
+            AdsLogsHelper.Logs(Ads_Events.InterstitialAdWillDisplay);
+            ForeGroundedAD = true;
+            MaxSdk.ShowInterstitial(InterID);
+            InterstitialShowd = true;
+            GRS_FirebaseHandler.Instance.LogEventPlay("interstitial_ad_shown");
+        }
+        else
+        {
+            if (AdmobeAdsManager.instance)
+                AdmobeAdsManager.instance.ShowInterstitial();
 
+            AdsLogsHelper.Logs(Ads_Events.InterstitialNotLoaded);
+            LoadInterstitial();
+        }
+    }
+    public void ShowAdmobFirst()
+    {
+        if (PlayerPrefs.GetInt("RemoveAds") == 1)
+        {
+            return;
+        }
+        if (!PreferenceManager.GetAdsStatus() || !isAppLovinInitiallized || adsStatus == AdType.NOAds)
+        {
+            if (!isAppLovinInitiallized)
+            {
+                ReTryToInitialize();              //     TO CHECK INTERNET CONNECTION
+                GRS_FirebaseHandler.Instance.LogEventPlay("interstitial_call_Offline");
+                return;
+            }
+        }
+
+        if (AdmobeAdsManager.instance.IsInterstitialReady())
+        {
+            AdmobeAdsManager.instance.ShowInterstitial();
+        }
+        else
+        {
+            AdmobeAdsManager.instance.LoadInterstitial();
+
+            if (IsInterstitialAdReady())
+            {
+                AdsLogsHelper.Logs(Ads_Events.InterstitialAdWillDisplay);
+                ForeGroundedAD = true;
+                MaxSdk.ShowInterstitial(InterID);
+                InterstitialShowd = true;
+                GRS_FirebaseHandler.Instance.LogEventPlay("interstitial_ad_shown");
+            }
+            else
+            {
+                if (AdmobeAdsManager.instance)
+                    AdmobeAdsManager.instance.ShowInterstitial();
+
+                AdsLogsHelper.Logs(Ads_Events.InterstitialNotLoaded);
+                LoadInterstitial();
+            }
+        }
+    }
 
 
     public void ShowFallBackInterstitial()
@@ -1512,7 +1640,7 @@ public class AdsManagerWrapper : MonoBehaviour
             //GRS_FirebaseHandler.Instance.LogEventPlay("interstitial not loaded");
         }
     }
-   
+
 
 
 
@@ -1557,59 +1685,32 @@ public class AdsManagerWrapper : MonoBehaviour
         NotifyReward = _delegate;
         AdsLogsHelper.Logs(Ads_Events.ShowRewardedAd);
 
-        //if (showAdMobNextRewarded)
-        //{
-        //    if (AdmobeAdsManager.instance.IsAdmobRewardedReady())
-        //    {
-        //        Debug.Log("Showing AdMob Rewarded Ad...");
-        //        AdmobeAdsManager.instance.ShowRewarded(() =>
-        //        {
-        //            Debug.Log("AdMob: User rewarded");
-        //            NotifyReward?.Invoke();
-        //        });
-        //        showAdMobNextRewarded = false; // Next time show MAX
-        //        return;
-        //    }
-        //}
-        //else
-        //{
-        //    if (IsRewardedAdReady())
-        //    {
-        //        Debug.Log("Showing MAX Rewarded Ad...");
-        //        ForeGroundedAD = true;
-        //        MaxSdk.ShowRewardedAd(RewardedID);
-        //        RewardVideoShowed = true;
-        //        showAdMobNextRewarded = true; // Next time show AdMob
-        //        return;
-        //    }
-        //}
-
         if (IsRewardedAdReady())
         {
             Debug.Log("Fallback: Showing MAX Rewarded");
             MaxSdk.ShowRewardedAd(RewardedID);
             showAdMobNextRewarded = true;
             ForeGroundedAD = true;
-            AdmobeAdsManager.instance.LoadRewarded();
+        //    AdmobeAdsManager.instance.LoadRewarded();
         }
-        else if (AdmobeAdsManager.instance.IsAdmobRewardedReady())
-        {
-            ForeGroundedAD = true;
-            Debug.Log("Fallback: Showing AdMob Rewarded");
-            AdmobeAdsManager.instance.ShowRewarded(() =>
-            {
-                NotifyReward?.Invoke();
-            });
-            showAdMobNextRewarded = false;
-        }
-        else
-        {
-            Debug.Log("No rewarded ads ready. Reloading...");
-            AdsLogsHelper.Logs(Ads_Events.RewardedAdNotLoaded);
+        //else if (AdmobeAdsManager.instance.IsAdmobRewardedReady())
+        //{
+        //    ForeGroundedAD = true;
+        //    Debug.Log("Fallback: Showing AdMob Rewarded");
+        //    AdmobeAdsManager.instance.ShowRewarded(() =>
+        //    {
+        //        NotifyReward?.Invoke();
+        //    });
+        //    showAdMobNextRewarded = false;
+        //}
+        //else
+        //{
+        //    Debug.Log("No rewarded ads ready. Reloading...");
+        //    AdsLogsHelper.Logs(Ads_Events.RewardedAdNotLoaded);
 
-            LoadRewardedAd();                  // MAX load
-            AdmobeAdsManager.instance.LoadRewarded(); // AdMob load
-        }
+        //    LoadRewardedAd();                  // MAX load
+        //    AdmobeAdsManager.instance.LoadRewarded(); // AdMob load
+        //}
     }
 
 
@@ -1776,7 +1877,7 @@ public class AdsManagerWrapper : MonoBehaviour
     private void Update()
     {
         //if (!isIdleTimeCompleted) { IdleInterstitialLogic(); }
-        if(PlayerPrefs.GetInt("RemoveAds")==0&&runAdsTimer)
+        if (PlayerPrefs.GetInt("RemoveAds") == 0 && runAdsTimer)
             IdleInterstitialLogic();
         //float now = Time.unscaledTime;
 
@@ -1810,7 +1911,7 @@ public class AdsManagerWrapper : MonoBehaviour
         solidAdTime -= Time.deltaTime;
         if (!isIdleTimeCompleted)
         {
-        timeForInterstitialAd -= Time.deltaTime;
+            timeForInterstitialAd -= Time.deltaTime;
             if (timeForInterstitialAd < 6)
             {
                 if (timeForInterstitialAd <= 2)
@@ -1820,7 +1921,7 @@ public class AdsManagerWrapper : MonoBehaviour
                 }
             }
         }
-        if (solidAdTime < loadingAdTextTime+1)
+        if (solidAdTime < loadingAdTextTime + 1)
         {
             if (IsInterstitialAdReady())
             {
@@ -1877,7 +1978,7 @@ public class AdsManagerWrapper : MonoBehaviour
     }
     public void OpenWifiSetting()
     {
-        
+
     }
 
     #endregion

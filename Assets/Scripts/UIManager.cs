@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     [Header("           Ads Panel. References")]
     public GameObject likeAdsPanel;
     public GameObject bonusRewardPanel;
+    public GameObject characterUnlockPanel;
     public Text adDurationText;
 
     AdsManagerWrapper ads;
@@ -186,7 +187,7 @@ public class UIManager : MonoBehaviour
     public void ShowAd()
     {
         if (ads)
-            ads.ShowInterstitial();
+            ads.ShowApplovinFirst();
     }
     public void LoadMenu()
     {
@@ -219,6 +220,25 @@ public class UIManager : MonoBehaviour
         if (Player.instance)
         {
             Player.instance.BackHouse();
+        }
+    }
+    private void OnApplicationQuit()
+    {
+        GameObject.FindObjectOfType<ES3AutoSaveMgr>().Save();
+    }
+    void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            GameObject.FindObjectOfType<ES3AutoSaveMgr>().Save();
+        }
+    }
+
+    void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+        {
+            GameObject.FindObjectOfType<ES3AutoSaveMgr>().Save();
         }
     }
 }

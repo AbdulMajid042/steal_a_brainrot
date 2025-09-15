@@ -27,6 +27,8 @@ public class AdmobeAdsManager : MonoBehaviour
     private BannerView mrecView;
     private AppOpenAd appOpenAd;
 
+    public long occurance=2;
+    public bool needAppOpen=false;
     void Start()
     {
         instance = this;
@@ -43,6 +45,7 @@ public class AdmobeAdsManager : MonoBehaviour
         }
 
         Invoke(nameof(Init), 0.1f);
+        PlayerPrefs.SetInt("Occurance", 0);
     }
 
     private void Init()
@@ -62,13 +65,13 @@ public class AdmobeAdsManager : MonoBehaviour
             LoadInterstitial2();
             LoadRewarded();
             LoadAppOpenAd();
-            LoadBanner(AdPosition.Top);
+        //    LoadBanner(AdPosition.Bottom);
             //bannerView = new BannerView(bannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
         });
     }
 
     #region Interstitial 1
-    private void LoadInterstitial()
+    public void LoadInterstitial()
     {
         Debug.Log("Loading Interstitial 1...");
         AdRequest adRequest = new AdRequest();
@@ -79,7 +82,7 @@ public class AdmobeAdsManager : MonoBehaviour
                 if (error != null || ad == null)
                 {
                     Debug.LogError("Failed to load interstitial 1: " + error.GetMessage().ToString());
-                    if (GRS_FirebaseHandler.Instance) GRS_FirebaseHandler.Instance.LogEventPlay("inter1_failed_admob_med" + error.GetMessage().ToString());
+                    if (GRS_FirebaseHandler.Instance) GRS_FirebaseHandler.Instance.LogEventPlay("inter1_failed_admob_med"+error.GetMessage().ToString());
                     return;
                 }
 
@@ -114,7 +117,7 @@ public class AdmobeAdsManager : MonoBehaviour
                 {
                     Debug.LogError("Failed to load interstitial 2: " + error);
                     if (GRS_FirebaseHandler.Instance) GRS_FirebaseHandler.Instance.LogEventPlay("inter2_failed_admob_med" + error.ToString());
-
+                    
                     return;
                 }
 
@@ -135,7 +138,7 @@ public class AdmobeAdsManager : MonoBehaviour
     }
     public void ShowInterstitial2()
     {
-        AdsManagerWrapper.Instance.ResetTimer();
+       AdsManagerWrapper.Instance.ResetTimer();
         AdsManagerWrapper.Instance.interstitialCount++;
         Debug.Log("Interstitial 2 is showing ");
 
@@ -184,7 +187,7 @@ public class AdmobeAdsManager : MonoBehaviour
                 AdsManagerWrapper.ForeGroundedAD = true;
                 AdsManagerWrapper.Instance.ResetTimer();
             }
-            interstitialAd2.Show();
+            interstitialAd2.Show(); 
             if (GRS_FirebaseHandler.Instance) GRS_FirebaseHandler.Instance.LogEventPlay("admobmed_fallbackInterAd_shown");
         }
         else
@@ -230,7 +233,7 @@ public class AdmobeAdsManager : MonoBehaviour
             rewardedAd.OnAdFullScreenContentClosed += () =>
             {
                 Debug.Log("AdMob Rewarded closed, reloading...");
-
+                
                 LoadRewarded();  // auto reload after use
             };
             rewardedAd.OnAdFullScreenContentFailed += (AdError err) =>
@@ -306,7 +309,7 @@ public class AdmobeAdsManager : MonoBehaviour
         bannerView.OnBannerAdLoaded += () =>
         {
             Debug.Log("AdMob Banner Loaded ");
-
+            
             isBannerLoaded = true;
         };
 
@@ -315,7 +318,7 @@ public class AdmobeAdsManager : MonoBehaviour
             Debug.Log("AdMob Banner Failed : " + error);
             if (GRS_FirebaseHandler.Instance) GRS_FirebaseHandler.Instance.LogEventPlay("ban_failed_admob_med" + error.ToString());
             if (AdsManagerWrapper.Instance) AdsManagerWrapper.Instance.ShowMaxBanner();
-            AdsManagerWrapper.Instance.currentBanner = AdsManagerWrapper.BannerSource.Max;
+            AdsManagerWrapper.Instance.currentBanner =AdsManagerWrapper.BannerSource.Max;
             isBannerLoaded = false;
         };
 
@@ -342,7 +345,7 @@ public class AdmobeAdsManager : MonoBehaviour
     {
         if (bannerView != null/* && isBannerLoaded*/)
         {
-            bannerView = new BannerView(bannerAdUnitId, AdSize.Banner, AdPosition.Top);
+            bannerView = new BannerView(bannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
             bannerView.Show();
             if (GRS_FirebaseHandler.Instance)
                 GRS_FirebaseHandler.Instance.LogEventPlay("admob_backup_banner_shown");
@@ -373,7 +376,7 @@ public class AdmobeAdsManager : MonoBehaviour
             mrecView = null;
         }
 
-        mrecView = new BannerView(mrecAdUnitId, AdSize.MediumRectangle, AdPosition.BottomLeft);
+        mrecView = new BannerView(mrecAdUnitId, AdSize.MediumRectangle, AdPosition.Center);
 
         // Subscribe to events
         mrecView.OnBannerAdLoaded += () =>
@@ -386,7 +389,7 @@ public class AdmobeAdsManager : MonoBehaviour
         mrecView.OnBannerAdLoadFailed += (LoadAdError error) =>
         {
             Debug.LogError("MREC failed to load: " + error);
-
+            
             //AdsManagerWrapper.Instance.ShowMaxMediumBanner();
             GRS_FirebaseHandler.Instance.LogEventPlay("admob_mrec_failed_" + error.GetMessage());
         };
@@ -487,6 +490,41 @@ public class AdmobeAdsManager : MonoBehaviour
     }
     public void ShowAppOpenAd()
     {
+        if(PlayerPrefs.GetInt("InAppClicked")==1)
+        {
+            PlayerPrefs.SetInt("Occurance", PlayerPrefs.GetInt("Occurance") + 1);
+            if (PlayerPrefs.GetInt("Occurance") % occurance != 0)
+            {
+                return;
+            }
+            if (!needAppOpen)
+            {
+                return;
+            }
+        }
+        if (appOpenAd != null)
+        {
+            appOpenAd.Show();
+            PlayerPrefs.GetInt("InAppClicked", 0);
+        }
+        else
+        {
+            Debug.Log("AppOpenAd not ready. Loading...");
+            LoadAppOpenAd();
+        }
+    }
+
+    public void ShowAppOpenAfterInAppOrMaxInterstitial()
+    {
+        PlayerPrefs.SetInt("Occurance", PlayerPrefs.GetInt("Occurance")+1);
+        if(PlayerPrefs.GetInt("Occurance") % occurance !=0)
+        {
+            return;
+        }
+        if(!needAppOpen)
+        {
+            return;
+        }
         if (appOpenAd != null)
         {
             appOpenAd.Show();
@@ -512,24 +550,24 @@ public class AdmobeAdsManager : MonoBehaviour
 
     public void ShowInterstitial()
     {
-        if (!PreferenceManager.GetAdsStatus() || AdsManagerWrapper.adsStatus == AdType.NOAds)
+        if (!PreferenceManager.GetAdsStatus() || AdsManagerWrapper.adsStatus == AdType.NOAds ) 
         {
             return;
         }
 
         if (IsInterstitialReady())
         {
-            if (AdsManagerWrapper.Instance)
-            {
-                AdsManagerWrapper.ForeGroundedAD = true;
-                AdsManagerWrapper.Instance.ResetTimer();
-            }
-            if (GRS_FirebaseHandler.Instance) GRS_FirebaseHandler.Instance.LogEventPlay("admob_med_int_shown");
+            //if (AdsManagerWrapper.Instance)
+            //{
+            //    AdsManagerWrapper.ForeGroundedAD = true;
+            //    AdsManagerWrapper.Instance.ResetTimer();
+            //}
+            if (GRS_FirebaseHandler.Instance) 
+                GRS_FirebaseHandler.Instance.LogEventPlay("admob_int_shown");
             interstitialAd.Show();
         }
         else
         {
-            Debug.Log("Interstitial not ready, loading...");
             LoadInterstitial();
         }
     }

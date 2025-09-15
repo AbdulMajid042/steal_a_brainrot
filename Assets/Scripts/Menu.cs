@@ -10,14 +10,9 @@ public class Menu : MonoBehaviour
     public Text playerTotalCurrency;
     public string sceneNameToLoad;
     public float delay;
-    public GameObject dailyRewardPanel;
+    public Text hackText;
     private void Start()
     {
-        if(PlayerPrefs.GetInt("hello")==0)
-        {
-            PlayerPrefs.SetInt("hello", 1);
-            dailyRewardPanel.SetActive(true);
-        }
         if (AdsManagerWrapper.Instance)
             ads = AdsManagerWrapper.Instance;
 
@@ -27,6 +22,7 @@ public class Menu : MonoBehaviour
             ads.ShowSmallBanner();
         }
         BindAllButtons();
+        PlayerPrefs.SetInt("Hack", 0);
     }
     void BindAllButtons()
     {
@@ -79,7 +75,7 @@ public class Menu : MonoBehaviour
     public void ShowAd()
     {
         if (ads)
-            ads.ShowInterstitial();
+            ads.ShowAdmobFirst();
     }
     public void LoadGame()
     {
@@ -97,6 +93,16 @@ public class Menu : MonoBehaviour
     public void SelectTime(string timeName)
     {
         PlayerPrefs.SetString("Time", timeName);
+    }
+    int hack = 0;
+    public void HackButtonTask()
+    {
+        hack++;
+        hackText.text = hack.ToString();
+        if(hack>=10)
+        {
+            PlayerPrefs.SetInt("Hack", 1);
+        }
     }
 }
 

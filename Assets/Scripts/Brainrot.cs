@@ -6,6 +6,8 @@ using UnityEngine;
 public class Brainrot : MonoBehaviour
 {
     [Header("           Stats")]
+    public bool showDummyValue;
+    public string dummyPrice, dummyMoneyGenerationValue;
     public Transform infoTransform;
     public string characterName;
     public int priceValue, moneyGenerationValue;
@@ -113,17 +115,29 @@ public class Brainrot : MonoBehaviour
             StartGeneratingMoney();
         }
     }
-    void SetStat()
+    public void SetStat()
     {
         animator = GetComponent<Animator>();
         nameText.text = characterName;
         priceText.text = "Price: " + FormatNumber(priceValue) + "$";
-        moneyGenerationText.text = moneyGenerationValue.ToString() + "$/sec";
+        moneyGenerationText.text = FormatNumber(moneyGenerationValue) + "$/sec";
+
+        if (showDummyValue)
+        {
+            priceText.text = dummyPrice;
+            moneyGenerationText.text = dummyMoneyGenerationValue;
+        }
     }
-    string FormatNumber(int value)
+    string FormatNumber(long value)
     {
-        if (value >= 1000)
-            return (value / 1000f).ToString("0.0") + "k"; // 1 decimal, e.g. 1.2k
+        if (value >= 1_000_000_000_000) // Trillions
+            return (value / 1_000_000_000_000f).ToString("0.0") + "t";
+        else if (value >= 1_000_000_000) // Billions
+            return (value / 1_000_000_000f).ToString("0.0") + "b";
+        else if (value >= 1_000_000) // Millions
+            return (value / 1_000_000f).ToString("0.0") + "m";
+        else if (value >= 1_000) // Thousands
+            return (value / 1_000f).ToString("0.0") + "k";
         else
             return value.ToString();
     }

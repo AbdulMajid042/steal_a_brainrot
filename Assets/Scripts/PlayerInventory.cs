@@ -29,7 +29,7 @@ public class PlayerInventory : MonoBehaviour
             {
                 item.isUnlocked = PlayerPrefs.GetInt("ItemUnlocked_" + item.itemName, 0) == 1;
             }
-
+            item.itemButton.onClick.AddListener(() => GetItemViaRewardedVideo(item.itemName, item.isUnlocked));
             UpdateUI(item);
         }
     }
@@ -47,6 +47,17 @@ public class PlayerInventory : MonoBehaviour
             PlayerPrefs.Save();
 
             UpdateUI(item);
+
+            weapon = GameObject.Find("vAxe");
+            foreach (Transform t in weapon.transform)
+            {
+                t.gameObject.SetActive(false);
+            }
+            foreach (Transform t in weapon.transform)
+            {
+                if (t.gameObject.name == itemName)
+                    t.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -57,24 +68,43 @@ public class PlayerInventory : MonoBehaviour
             item.adIcon.SetActive(!item.isUnlocked);
         }
     }
-
+    string itemString;
+    GameObject weapon;
     // Example: Hook this to button clicks in the store
-    public void OnItemButtonClicked(string itemName)
+    public void OnItemButtonClicked()
     {
-        var item = items.Find(i => i.itemName == itemName);
+        var item = items.Find(i => i.itemName == itemString);
         if (item == null) return;
 
         if (!item.isUnlocked)
         {
-            // Show rewarded ad first
-            Debug.Log("Show rewarded ad for: " + itemName);
-
             // After success from AdManager, call:
-            UnlockItem(itemName);
+            UnlockItem(itemString);
         }
-        else
+        weapon = GameObject.Find("vAxe");
+        foreach (Transform t in weapon.transform)
         {
-            Debug.Log(itemName + " already unlocked, equip/use it.");
+            t.gameObject.SetActive(false);
+        }
+        foreach (Transform t in weapon.transform)
+        {
+            if (t.gameObject.name == itemString)
+                t.gameObject.SetActive(true);
+        }
+        Time.timeScale = 1;
+        gameObject.SetActive(false);
+    }
+    public void GetItemViaRewardedVideo(string itemName, bool isUnlocked)
+    {
+        itemString = itemName;
+        if (isUnlocked)
+        {
+            OnItemButtonClicked();
+            return;
+        }
+        if (AdsManagerWrapper.Instance)
+        {
+            AdsManagerWrapper.Instance.ShowRewardedVideo(OnItemButtonClicked);
         }
     }
 }
