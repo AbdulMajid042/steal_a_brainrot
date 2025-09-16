@@ -88,14 +88,14 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);    
+    //    DontDestroyOnLoad(this);   
         Instance = this;
         PlayerPrefs.SetInt("InAppClicked", 0);
     }
 
     private void OnEnable()
     {
-        Instance = this;
+    //    Instance = this;
     }
 
     async void InitGamingService()
@@ -118,7 +118,7 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
 
     void Start()
     {
-        Instance = this;
+    //    Instance = this;
 
         InitGamingService();
         if (m_StoreController == null)
@@ -368,6 +368,10 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                     GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Madundung)
+                {
+                    GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
+                }
+                if (nonConsumableSucceededInapp.inAppType == InAppItemName.Celestino)
                 {
                     GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                 }

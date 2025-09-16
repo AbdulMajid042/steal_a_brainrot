@@ -42,6 +42,7 @@ public class AdsManagerWrapper : MonoBehaviour
     public String InterID;
     public String RewardedID;
     public String BannerID;
+    public String BannerID2;
     public String RectBannerID;
 
     //[Space]
@@ -119,6 +120,8 @@ public class AdsManagerWrapper : MonoBehaviour
     public static AdLoadingStatus iAdStatus = AdLoadingStatus.NotLoaded;
 
     public static AdLoadingStatus smallBannerStatus = AdLoadingStatus.NotLoaded;
+    public static AdLoadingStatus smallBannerStatus2 = AdLoadingStatus.NotLoaded;
+
 
     public static AdLoadingStatus mediumBannerStatus = AdLoadingStatus.NotLoaded;
 
@@ -127,8 +130,8 @@ public class AdsManagerWrapper : MonoBehaviour
     public static AdLoadingStatus appOpenAdStatus = AdLoadingStatus.NotLoaded;
     #region Private Members
     private int retryAttemptIAD, retryAttempt;
-    private bool isAppLovinInitiallized = false, isSBannerDisplayed = false, isMBannerDisplayed = false;
-    private bool isSmallBannerLoaded = false, isMediumBannerLoaded = false;
+    public bool isAppLovinInitiallized = false, isSBannerDisplayed = false, isSBannerDisplayed2 = false, isMBannerDisplayed = false;
+    private bool isSmallBannerLoaded = false, isSmallBannerLoaded2 = false, isMediumBannerLoaded = false;
     public static bool ForeGroundedAD = false;
     private static RewardUserDelegate NotifyReward;
     #endregion
@@ -146,14 +149,25 @@ public class AdsManagerWrapper : MonoBehaviour
     //#endregion
     [HideInInspector] public GameObject loadingscreen, RewardLoadingPanel;
     #endregion 
+    public void ShowBannerCheck()
+    {
+        if(!isSBannerDisplayed)
+        {
+            ShowSmallBanner();
+        }
+        if (!isSBannerDisplayed2)
+        {
+            ShowSmallBanner2();
+        }
+        if(!isSBannerDisplayed || !isSBannerDisplayed2)
+            Invoke("ShowBannerCheck", 1.0f);
+    }
     #region SolarEngine
+
     void SE_Initialize()
     {
-
         Debug.Log("[unity] init click");
-
         String AppKey = "9d3971188b4471dd";
-
         SEConfig seConfig = new SEConfig();
         RCConfig rcConfig = new RCConfig();
         //SEConfig isDebugModel = new SEConfig();
@@ -164,7 +178,6 @@ public class AdsManagerWrapper : MonoBehaviour
         seConfig.initCompletedCallback = initCallback;
         SolarEngine.Analytics.preInitSeSdk(AppKey);
         SolarEngine.Analytics.initSeSdk(AppKey, seConfig, rcConfig);
-
     }
 
     public void OpenPremium()
@@ -288,12 +301,6 @@ public class AdsManagerWrapper : MonoBehaviour
         lastAppOpenAdTime = Time.unscaledTime - APP_OPEN_COOLDOWN;
         lastRewardedTime = Time.unscaledTime - 999f;
 
-
-
-
-
-
-
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
@@ -306,39 +313,9 @@ public class AdsManagerWrapper : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-        if (SystemInfo.systemMemorySize > 1024)
-        {
-            Debug.Log("GG >> System Memory is greater than 2048, Showing Ads");
-            adsStatus = AdType.Ads;
-
-            if (SystemInfo.systemMemorySize <= 4096)
-                QualitySettings.SetQualityLevel(1);
-            else
-                QualitySettings.SetQualityLevel(2);
-        }
-        else
-        {
-            //Debug.Log("GG >> System Memory is less than or equal to 1024, Not Showing Ads");
-            //adsStatus = AdType.NOAds;
-            //QualitySettings.SetQualityLevel(0);
-            Debug.Log("GG >> System Memory is greater than 2048, Showing Ads");
-            adsStatus = AdType.Ads;
-
-            if (SystemInfo.systemMemorySize <= 4096)
-                QualitySettings.SetQualityLevel(1);
-            else
-                QualitySettings.SetQualityLevel(2);
-        }
-
-
-
-
-
-
     }
     private void Start()
     {
-
         SE_Initialize();
         PlayerPrefs.SetInt("firstQuiz", 0);
         timeForInterstitialAd = idleAdTime;
@@ -370,7 +347,7 @@ public class AdsManagerWrapper : MonoBehaviour
         //OnInterstitialShown();
         //OnRewardedVideoShown();
 
-
+        Invoke("ShowBannerCheck", 1.0f);
 
     }
 
@@ -416,11 +393,12 @@ public class AdsManagerWrapper : MonoBehaviour
                 isAppLovinInitiallized = true;
                 Logging.Log("GG >> AppLovin:Initialized");
                 AdsLogsHelper.Logs(Ads_Events.Initialized);
-                InitializeSmallBannerAds(MaxSdkBase.BannerPosition.TopCenter);               // just for testing
-                InitializeMRecAds(MaxSdkBase.AdViewPosition.BottomLeft);               // just for testing
-                InitializeInterstitialAds();               // just for testing
-                InitializeRewardedAds();                  // just for testing
-                InitializeAppOpenAds();                   // just for testing
+                InitializeSmallBannerAds(MaxSdkBase.BannerPosition.TopLeft);
+                InitializeSmallBannerAds2(MaxSdkBase.BannerPosition.TopRight);
+                InitializeMRecAds(MaxSdkBase.AdViewPosition.BottomLeft);
+                InitializeInterstitialAds();
+                InitializeRewardedAds();
+                InitializeAppOpenAds();
                 if (GRS_FirebaseHandler.Instance) GRS_FirebaseHandler.Instance.LogEventPlay("applovin_Initialized");
             };
 
@@ -433,6 +411,18 @@ public class AdsManagerWrapper : MonoBehaviour
             Logging.Log("GG >> AppLovin:NoInternet");
             AdsLogsHelper.Logs(Ads_Events.AdapterNotReadyNoInternet);
         }
+
+        Invoke("ShowSmallBanner", 1.0f);
+        Invoke("ShowSmallBanner2", 1.0f);
+        Invoke("ShowMediumBanner", 1.0f);
+
+        Invoke("ShowSmallBanner", 2.0f);
+        Invoke("ShowSmallBanner2", 2.0f);
+        Invoke("ShowMediumBanner", 2.0f);
+
+        Invoke("ShowSmallBanner", 3.0f);
+        Invoke("ShowSmallBanner2", 3.0f);
+        Invoke("ShowMediumBanner", 3.0f);
     }
 
     public void ReTryToInitialize()
@@ -647,7 +637,21 @@ public class AdsManagerWrapper : MonoBehaviour
         // MaxSdkCallbacks.Banner.OnAdCollapsedEvent += OnBannerAdCollapsedEvent;
         LoadSmallBanner(AdPosition);
     }
+    public void InitializeSmallBannerAds2(MaxSdkBase.BannerPosition AdPosition)
+    {
+        // Banners are automatically sized to 320×50 on phones and 728×90 on tablets
+        // You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
+        //MaxSdk.SetBannerWidth(BannerID,468);
 
+
+        MaxSdkCallbacks.Banner.OnAdLoadedEvent += OnBannerAdLoadedEvent2;
+        MaxSdkCallbacks.Banner.OnAdLoadFailedEvent += OnBannerAdLoadFailedEvent2;
+        MaxSdkCallbacks.Banner.OnAdClickedEvent += OnBannerAdClickedEvent2;
+        MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent += OnAllAdsRevenuePaidEvent;
+        // MaxSdkCallbacks.Banner.OnAdExpandedEvent += OnBannerAdExpandedEvent;
+        // MaxSdkCallbacks.Banner.OnAdCollapsedEvent += OnBannerAdCollapsedEvent;
+        LoadSmallBanner2(AdPosition);
+    }
     public void InitializeMRecAds(MaxSdkBase.AdViewPosition AdPosition)
     {
         MaxSdkCallbacks.MRec.OnAdLoadedEvent += OnMRecAdLoadedEvent;
@@ -726,6 +730,34 @@ public class AdsManagerWrapper : MonoBehaviour
         trackAdClick(arg2, adType);
     }
     #endregion
+    #region SmallBannerAdsHandler2
+    private void OnBannerAdLoadedEvent2(string arg1, MaxSdkBase.AdInfo arg2)
+    {
+        smallBannerStatus2 = AdLoadingStatus.Loaded;
+        Logging.Log("GG >> AppLovin:smallBanner:Loaded");
+        AdsLogsHelper.Logs(Ads_Events.SmallBannerLoaded);
+        isSmallBannerLoaded2 = true;
+        //ShowSmallBanner();
+        // if (isCP_SM_Showing) { ShowSmallBanner(); }
+    }
+    private void OnBannerAdLoadFailedEvent2(string arg1, MaxSdkBase.ErrorInfo arg2)
+    {
+        smallBannerStatus2 = AdLoadingStatus.NoInventory;
+        Logging.Log("GG >> AppLovin:smallBanner:NoInventory");
+        AdsLogsHelper.Logs(Ads_Events.SmallBannerNoInventory);
+        ShowSmallBanner();
+        currentBanner = BannerSource.AdMob;
+        //  isSmallBannerLoaded = false;
+    }
+    private void OnBannerAdClickedEvent2(string arg1, MaxSdkBase.AdInfo arg2)
+    {
+        Logging.Log("GG >> AppLovin:smallBanner:Clicked");
+        AdsLogsHelper.Logs(Ads_Events.SmallBannerClicked);
+        SolarAdType adType = SolarAdType(arg2.AdFormat);
+        trackAdClick(arg2, adType);
+    }
+    #endregion
+
     #region MediumBannerAdEvents
     private void OnMRecAdLoadedEvent(string arg1, MaxSdkBase.AdInfo arg2)
     {
@@ -1036,21 +1068,39 @@ public class AdsManagerWrapper : MonoBehaviour
     #region Load Ads
     public void LoadSmallBanner(MaxSdkBase.BannerPosition AdPosition)
     {
-        if ((!PreferenceManager.GetAdsStatus() || !isAppLovinInitiallized || smallBannerStatus == AdLoadingStatus.Loading || IsSmallBannerReady() || adsStatus == AdType.NOAds) && !Application.isEditor)
+        if (PlayerPrefs.GetInt("RemoveAds") == 1)
+        {
             return;
+        }
         Logging.Log("GG >> AppLovin:smallbanner:LoadRequest");
         AdsLogsHelper.Logs(Ads_Events.LoadSmallBanner);
         //MaxSdk.LoadBanner(BannerID);
         smallBannerStatus = AdLoadingStatus.Loading;
         //MaxSdkUtils.GetAdaptiveBannerHeight(-1);
         MaxSdk.CreateBanner(BannerID, AdPosition);
-
         MaxSdk.SetBannerExtraParameter(BannerID, "adaptive_banner", "false");
+    }
+    public void LoadSmallBanner2(MaxSdkBase.BannerPosition AdPosition)
+    {
+        if (PlayerPrefs.GetInt("RemoveAds") == 1)
+        {
+            return;
+        }
+        Logging.Log("GG >> AppLovin:smallbanner:LoadRequest");
+        AdsLogsHelper.Logs(Ads_Events.LoadSmallBanner);
+        //MaxSdk.LoadBanner(BannerID);
+        smallBannerStatus2 = AdLoadingStatus.Loading;
+        //MaxSdkUtils.GetAdaptiveBannerHeight(-1);
+        MaxSdk.CreateBanner(BannerID2, AdPosition);
+        MaxSdk.SetBannerExtraParameter(BannerID2, "adaptive_banner", "false");
     }
     public void LoadMediumBanner(MaxSdkBase.AdViewPosition AdPosition)
     {
-        if ((!PreferenceManager.GetAdsStatus() || !isAppLovinInitiallized || mediumBannerStatus == AdLoadingStatus.Loading || IsMediumBannerReady() || adsStatus == AdType.NOAds) && !Application.isEditor)
+
+        if (PlayerPrefs.GetInt("RemoveAds") == 1)
+        {
             return;
+        }
         mediumBannerStatus = AdLoadingStatus.Loading;
         Logging.Log("GG >> AppLovin:mediumbanner:LoadRequest");
         AdsLogsHelper.Logs(Ads_Events.LoadMediumBanner);
@@ -1059,8 +1109,10 @@ public class AdsManagerWrapper : MonoBehaviour
     }
     public void LoadInterstitial()
     {
-        if (!PreferenceManager.GetAdsStatus() || !isAppLovinInitiallized || iAdStatus == AdLoadingStatus.Loading || IsInterstitialAdReady() || adsStatus == AdType.NOAds)
+        if (PlayerPrefs.GetInt("RemoveAds") == 1)
+        {
             return;
+        }
         iAdStatus = AdLoadingStatus.Loading;
         Logging.Log("GG >> AppLovin:iad:LoadRequest"); ;
         AdsLogsHelper.Logs(Ads_Events.LoadInterstitial);
@@ -1078,6 +1130,10 @@ public class AdsManagerWrapper : MonoBehaviour
     public bool IsSmallBannerReady()
     {
         return isSmallBannerLoaded;
+    }
+    public bool IsSmallBannerReady2()
+    {
+        return isSmallBannerLoaded2;
     }
     public bool IsMediumBannerReady()
     {
@@ -1151,21 +1207,41 @@ public class AdsManagerWrapper : MonoBehaviour
         if (PlayerPrefs.GetInt("RemoveAds") == 1)
             return;
 
-        if (!PreferenceManager.GetAdsStatus() || adsStatus == AdType.NOAds)
-            return;
+        //if (isAppLovinInitiallized)
+        //{ MaxSdk.HideBanner(BannerID); }
 
-        if (isAppLovinInitiallized)
-        { MaxSdk.HideBanner(BannerID); }
-
-        Logging.Log("GG >> AppLovin:smallbanner:Showcall");
-        if (IsSmallBannerReady() || Application.isEditor)
+        if (IsSmallBannerReady())
         {
             isSBannerDisplayed = true;
             MaxSdk.ShowBanner(BannerID);
+            Debug.Log("GG >> AppLovin:smallbanner1:Showcall");
         }
         else
         {
-            Logging.Log("GG >> AppLovin:smallBanner:NotLoaded");
+            Debug.Log("GG >> AppLovin:smallBanner1:NotLoaded");
+            InitializeSmallBannerAds(MaxSdkBase.BannerPosition.TopLeft);
+        }
+
+    }
+    public void ShowSmallBanner2(/*MaxSdkBase.BannerPosition AdPositio*/)
+    {
+        if (PlayerPrefs.GetInt("RemoveAds") == 1)
+            return;
+
+
+        //if (isAppLovinInitiallized)
+        //{ MaxSdk.HideBanner(BannerID2); }
+
+        if (IsSmallBannerReady2())
+        {
+            isSBannerDisplayed2 = true;
+            MaxSdk.ShowBanner(BannerID2);
+            Debug.Log("GG >> AppLovin:smallbanner2:Showcall");
+        }
+        else
+        {
+            Debug.Log("GG >> AppLovin:smallBanner2:NotLoaded");
+            InitializeSmallBannerAds2(MaxSdkBase.BannerPosition.TopRight);
         }
     }
     private void HideCurrentBanner()
@@ -1297,9 +1373,6 @@ public class AdsManagerWrapper : MonoBehaviour
         if (PlayerPrefs.GetInt("RemoveAds") == 1)
             return;
 
-        if (!PreferenceManager.GetAdsStatus() || adsStatus == AdType.NOAds)
-            return;
-
         if (isAppLovinInitiallized)
         { MaxSdk.HideMRec(RectBannerID); }
         if (IsMediumBannerReady() || Application.isEditor)
@@ -1310,6 +1383,7 @@ public class AdsManagerWrapper : MonoBehaviour
         else
         {
             Logging.Log("GG >> AppLovin:mediumBanner:NotLoaded");
+            InitializeMRecAds(MaxSdkBase.AdViewPosition.BottomLeft);
         }
     }
 
@@ -1529,7 +1603,7 @@ public class AdsManagerWrapper : MonoBehaviour
         {
             return;
         }
-        if (!PreferenceManager.GetAdsStatus() || !isAppLovinInitiallized || adsStatus == AdType.NOAds)
+        if (!isAppLovinInitiallized)
         {
             if (!isAppLovinInitiallized)
             {
@@ -1560,15 +1634,6 @@ public class AdsManagerWrapper : MonoBehaviour
         if (PlayerPrefs.GetInt("RemoveAds") == 1)
         {
             return;
-        }
-        if (!PreferenceManager.GetAdsStatus() || !isAppLovinInitiallized || adsStatus == AdType.NOAds)
-        {
-            if (!isAppLovinInitiallized)
-            {
-                ReTryToInitialize();              //     TO CHECK INTERNET CONNECTION
-                GRS_FirebaseHandler.Instance.LogEventPlay("interstitial_call_Offline");
-                return;
-            }
         }
 
         if (AdmobeAdsManager.instance.IsInterstitialReady())
@@ -1691,7 +1756,7 @@ public class AdsManagerWrapper : MonoBehaviour
             MaxSdk.ShowRewardedAd(RewardedID);
             showAdMobNextRewarded = true;
             ForeGroundedAD = true;
-        //    AdmobeAdsManager.instance.LoadRewarded();
+            //    AdmobeAdsManager.instance.LoadRewarded();
         }
         //else if (AdmobeAdsManager.instance.IsAdmobRewardedReady())
         //{

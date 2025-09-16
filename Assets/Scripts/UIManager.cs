@@ -42,14 +42,16 @@ public class UIManager : MonoBehaviour
             ads = AdsManagerWrapper.Instance;
 
         if (ads)
+        {
             ads.HideMediumBanner();
+       //     ads.ShowSmallBanner();
+       //     ads.ShowSmallBanner2();
+        }
 
         startingTime = idleAdTime;
         Invoke("DecreaseTime", 1.0f);
         UpdateAdText();
         BindAllButtons();
-        if (GRS_FirebaseHandler.Instance)
-            GRS_FirebaseHandler.Instance.LogIAPPurchased("GameStart");
     }
 
     void BindAllButtons()
@@ -119,7 +121,7 @@ public class UIManager : MonoBehaviour
                     Player.instance.currentBrainrot.GetComponent<Brainrot>().BuyCharacter();
                     Player.instance.currentBrainrot.GetComponent<Brainrot>().EnableTriggerCollider(false);
                     buyBrainrot.SetActive(false);
-                    int temp = PriceManager.instance.GetPlayerCurrency() - Player.instance.currentBrainrot.GetComponent<Brainrot>().priceValue;
+                    long temp = PriceManager.instance.GetPlayerCurrency() - Player.instance.currentBrainrot.GetComponent<Brainrot>().priceValue;
                     PriceManager.instance.SetCurrencyAfterBuy(temp);
                 }
                 if(AudioManager.instance)
@@ -141,9 +143,7 @@ public class UIManager : MonoBehaviour
     public void SellBrainrot()
     {
         var brainrot = Player.instance.currentBrainrot.GetComponent<Brainrot>();
-
         PriceManager.instance.SetCurrency(brainrot.priceValue);
-
         brainrot.SellCharacter();                // frees the spot + stops generation
         Player.instance.currentBrainrot.SetActive(false);
         sell.SetActive(false);
@@ -152,12 +152,13 @@ public class UIManager : MonoBehaviour
     public void StealBrainrot()
     {
         steal.SetActive(false);
+        GameObject stolen = Player.instance.stolen;
         Player.instance.carriedBrainrot = true;
-        Player.instance.stolen.GetComponentInChildren<Collider>().enabled = false;
-        Player.instance.stolen.GetComponentInChildren<Brainrot>().isStolen = true;
-        Player.instance.stolen.transform.parent = Player.instance.stolenBrainrotsTransform;
-        Player.instance.stolen.transform.localPosition = Vector3.zero;
-        Player.instance.stolen.transform.localEulerAngles = Vector3.zero;
+        stolen.GetComponentInChildren<Collider>().enabled = false;
+        stolen.GetComponentInChildren<Brainrot>().isStolen = true;
+        stolen.transform.parent = Player.instance.stolenBrainrotsTransform;
+        stolen.transform.localPosition = Vector3.zero;
+        stolen.transform.localEulerAngles = Vector3.zero;
     }
     public void UnlockHouse()
     {
@@ -211,7 +212,7 @@ public class UIManager : MonoBehaviour
     }
     void GiveFreeCash()
     {
-        PlayerPrefs.SetInt("PlayerCurrency", PlayerPrefs.GetInt("PlayerCurrency") + 200);
+        RCC_PlayerPrefsX.SetLong("PlayerCurrency", RCC_PlayerPrefsX.GetLong("PlayerCurrency") + 200);
         coinAttraction.SetActive(false);
         coinAttraction.SetActive(true);
     }

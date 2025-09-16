@@ -88,15 +88,18 @@ public class Player : MonoBehaviour
             {
                 UIManager.instance.characterUnlockPanel.SetActive(true);
                 unlockable = other.GetComponentInParent<Brainrot>().gameObject;
-                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.characterName = other.GetComponentInParent<Brainrot>().name;
-                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.price = other.GetComponentInParent<Brainrot>().priceValue;
-                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.income = other.GetComponentInParent<Brainrot>().moneyGenerationValue;
-                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.rarity = other.GetComponentInParent<BuyThisCharacter>().rarity;
-                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.inAppPrice = other.GetComponentInParent<BuyThisCharacter>().inAppprice;
-                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.adsRequired = other.GetComponentInParent<BuyThisCharacter>().adsRequired;
-                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.adsWatched = other.GetComponentInParent<BuyThisCharacter>().adsWatched;
-                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().characterData.inAppString = other.GetComponentInParent<BuyThisCharacter>().inAppString;
-                UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>().UpdateUI();
+                CharacterUnlockPanel scr = UIManager.instance.characterUnlockPanel.GetComponent<CharacterUnlockPanel>();
+                Brainrot brainrot = other.GetComponentInParent<Brainrot>();
+                scr.characterData.characterName = brainrot.name;
+                scr.characterData.price = brainrot.priceValue;
+                scr.characterData.income = brainrot.moneyGenerationValue;
+                BuyThisCharacter buy = other.GetComponentInParent<BuyThisCharacter>();
+                scr.characterData.rarity = buy.rarity;
+                scr.characterData.inAppPrice = buy.inAppprice;
+                scr.characterData.adsRequired = buy.adsRequired;
+                scr.characterData.adsWatched = buy.adsWatched;
+                scr.characterData.inAppString = buy.inAppString;
+                scr.UpdateUI();
             }
         }
     }

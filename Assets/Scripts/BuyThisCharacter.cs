@@ -38,5 +38,6 @@ public class BuyThisCharacter : MonoBehaviour
     {
         gameObject.GetComponent<Brainrot>().PlaceToAvailablePlace();
         gameObject.GetComponent<Brainrot>().triggerCollider.SetActive(false);
+        gameObject.GetComponent<Brainrot>().isBought=true;
     }
 }

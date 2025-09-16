@@ -10,7 +10,7 @@ public class Brainrot : MonoBehaviour
     public string dummyPrice, dummyMoneyGenerationValue;
     public Transform infoTransform;
     public string characterName;
-    public int priceValue, moneyGenerationValue;
+    public long priceValue, moneyGenerationValue;
 
     [Header("           Text Fields")]
     public TextMeshPro nameText;
@@ -37,7 +37,7 @@ public class Brainrot : MonoBehaviour
     private bool reachedPointC = false;
     public bool isGeneratingMoney = false;
 
-    public int generatedMoney = 0;
+    public long generatedMoney = 0;
 
     public int spotNumber = -1;
     public bool isLast;
@@ -131,11 +131,11 @@ public class Brainrot : MonoBehaviour
     string FormatNumber(long value)
     {
         if (value >= 1_000_000_000_000) // Trillions
-            return (value / 1_000_000_000_000f).ToString("0.0") + "t";
+            return (value / 1_000_000_000_000f).ToString("0.0") + " Trillion";
         else if (value >= 1_000_000_000) // Billions
-            return (value / 1_000_000_000f).ToString("0.0") + "b";
+            return (value / 1_000_000_000f).ToString("0.0") + " Billion";
         else if (value >= 1_000_000) // Millions
-            return (value / 1_000_000f).ToString("0.0") + "m";
+            return (value / 1_000_000f).ToString("0.0") + " Million";
         else if (value >= 1_000) // Thousands
             return (value / 1_000f).ToString("0.0") + "k";
         else

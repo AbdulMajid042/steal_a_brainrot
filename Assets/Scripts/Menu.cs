@@ -19,10 +19,19 @@ public class Menu : MonoBehaviour
         if (ads)
         {
             ads.HideMediumBanner();
-            ads.ShowSmallBanner();
+       //     ads.ShowSmallBanner();
+        //    ads.ShowSmallBanner2();
         }
         BindAllButtons();
         PlayerPrefs.SetInt("Hack", 0);
+    }
+
+    void ShowingSmallBanner()
+    {
+        if(ads)
+        {
+
+        }
     }
     void BindAllButtons()
     {
@@ -52,7 +61,7 @@ public class Menu : MonoBehaviour
     }
     void GiveFreeCash()
     {
-        PlayerPrefs.SetInt("PlayerCurrency", PlayerPrefs.GetInt("PlayerCurrency") + 200);
+        RCC_PlayerPrefsX.SetLong("PlayerCurrency", RCC_PlayerPrefsX.GetLong("PlayerCurrency") + 200);
         coinAttraction.SetActive(false);
         coinAttraction.SetActive(true);
     }
@@ -60,9 +69,9 @@ public class Menu : MonoBehaviour
     {
         playerTotalCurrency.text ="$ " + GetPlayerCurrency().ToString();
     }
-    public int GetPlayerCurrency()
+    public long GetPlayerCurrency()
     {
-        return PlayerPrefs.GetInt("PlayerCurrency");
+        return RCC_PlayerPrefsX.GetLong("PlayerCurrency");
     }
     public void OpenHyperlink(string url)
     {
@@ -75,7 +84,9 @@ public class Menu : MonoBehaviour
     public void ShowAd()
     {
         if (ads)
+        {
             ads.ShowAdmobFirst();
+        }
     }
     public void LoadGame()
     {

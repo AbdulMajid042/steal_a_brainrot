@@ -42,8 +42,8 @@ namespace Firebase.Sample.Analytics
         [SerializeField] string appOpenAfterInter;
         [SerializeField] string appOpenCountAfterInter;
 
-        [SerializeField] string occurance;
-        [SerializeField] string needAppOpen;
+        [SerializeField] string drainrotOccurance;
+        [SerializeField] string drainrotNeedAppOpen;
 
 
         //[SerializeField] string AdsEnable;
@@ -279,8 +279,8 @@ namespace Firebase.Sample.Analytics
             AdsManagerWrapper.Instance.appOpenAfterIad = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(appOpenAfterInter).BooleanValue;
             AdsManagerWrapper.Instance.appOpenCount = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(appOpenCountAfterInter).LongValue;
 
-            AdmobeAdsManager.instance.occurance = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(occurance).LongValue;
-            AdmobeAdsManager.instance.needAppOpen = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(needAppOpen).BooleanValue;
+            AdmobeAdsManager.instance.drainrotOccurance = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(drainrotOccurance).LongValue;
+            AdmobeAdsManager.instance.drainrotNeedAppOpen = RemoteConfig.FirebaseRemoteConfig.DefaultInstance.GetValue(drainrotNeedAppOpen).BooleanValue;
 
 
             Debug.Log($"[After Fetch] Inter Ad Time = {AdsManagerWrapper.Instance.idleAdTime}");

@@ -1,6 +1,7 @@
+using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class DailyRewardSystem : MonoBehaviour
 {
@@ -62,6 +63,9 @@ public class DailyRewardSystem : MonoBehaviour
 
     void UpdateUI()
     {
+        if(currentDay!=0)
+            claimButtons[currentDay-1].gameObject.GetComponent<Animator>().enabled=true;
+
         for (int i = 0; i < claimButtons.Length; i++)
         {
             bool unlocked = i < currentDay;
@@ -92,7 +96,7 @@ public class DailyRewardSystem : MonoBehaviour
 
     public void ClaimTripleReward()
     {
-       if(AdsManagerWrapper.Instance)
+        if (AdsManagerWrapper.Instance)
         {
             AdsManagerWrapper.Instance.ShowRewardedVideo(GiveTrippleReward);
         }

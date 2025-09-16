@@ -10,9 +10,9 @@ public class CharacterUnlockPanel : MonoBehaviour
         public string inAppString;
         public int adsRequired = 10;   // How many ads needed
         public int adsWatched = 0;     // Current progress
-        public int price;              // Optional: for IAP
+        public long price;              // Optional: for IAP
         public int inAppPrice;              // Optional: for IAP
-        public int income;
+        public long income;
         public string rarity;
         public bool isUnlocked = false;
     }

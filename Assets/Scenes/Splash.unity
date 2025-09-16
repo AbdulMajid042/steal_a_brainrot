@@ -820,6 +820,10 @@ PrefabInstance:
       value: bcc6c1b92066c55d
       objectReference: {fileID: 0}
     - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: BannerID2
+      value: 1771d340d2b3f04b
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
       propertyPath: ADsDisable
       value: 0
       objectReference: {fileID: 0}
@@ -840,8 +844,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: TestDevices.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
       propertyPath: CPSmallBanner.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527505813, guid: fc911260652cc5f47a20cadba2008988, type: 3}
+      propertyPath: TestDevices.Array.data[0]
+      value: d5a56643-0678-439d-85ed-a099d47710ea
       objectReference: {fileID: 0}
     - target: {fileID: 759551095168408990, guid: fc911260652cc5f47a20cadba2008988, type: 3}
       propertyPath: m_Color.a
@@ -969,8 +981,9 @@ MonoBehaviour:
   bannerAdUnitId: ca-app-pub-6263347419612757/9808439079
   mrecAdUnitId: ca-app-pub-6263347419612757/8683931809
   appOpenAdUnitId: ca-app-pub-6263347419612757/4936258485
-  occurance: 2
-  needAppOpen: 0
+  drainrotOccurance: 2
+  drainrotNeedAppOpen: 1
+  isTestIDs: 0
 --- !u!114 &1191341145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1007,8 +1020,8 @@ MonoBehaviour:
   enableSelectionScreens: 
   appOpenAfterInter: 
   appOpenCountAfterInter: 
-  occurance: occurance
-  needAppOpen: needAppOpen
+  drainrotOccurance: drainrotOccurance
+  drainrotNeedAppOpen: drainrotNeedAppOpen
 --- !u!1 &1206591002
 GameObject:
   m_ObjectHideFlags: 0

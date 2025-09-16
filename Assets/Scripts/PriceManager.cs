@@ -1,18 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PriceManager : MonoBehaviour
 {
     public static PriceManager instance;
-    public int brainrotPrice;
-    int playerCurrency;
-    public int generatedMoneyToCollect;
+    public long brainrotPrice;
+    long playerCurrency;
+    public long generatedMoneyToCollect;
     public Text playerTotalCurrency;
     [Header("           Dummy Reward")]
     public bool giveDummyReward;
-    public int dummyReward;
+    public long dummyReward;
     private void Awake()
     {
         if (instance == null)
@@ -20,26 +18,26 @@ public class PriceManager : MonoBehaviour
     }
     private void Start()
     {
-        if(giveDummyReward)
+        if (giveDummyReward)
         {
-            PlayerPrefs.SetInt("PlayerCurrency", dummyReward);
+            RCC_PlayerPrefsX.SetLong("PlayerCurrency", dummyReward);
         }
     }
     private void Update()
     {
-        playerTotalCurrency.text ="$ "+ GetPlayerCurrency().ToString();
+        playerTotalCurrency.text = "$ " + RCC_PlayerPrefsX.FormatCurrency(GetPlayerCurrency()); 
     }
-    public void SetCurrency(int currency)
+    public void SetCurrency(long currency)
     {
-        PlayerPrefs.SetInt("PlayerCurrency", PlayerPrefs.GetInt("PlayerCurrency")+currency);
+        RCC_PlayerPrefsX.SetLong("PlayerCurrency", RCC_PlayerPrefsX.GetLong("PlayerCurrency") + currency);
     }
-    public void SetCurrencyAfterBuy(int currency)
+    public void SetCurrencyAfterBuy(long currency)
     {
-        PlayerPrefs.SetInt("PlayerCurrency", currency);
+        RCC_PlayerPrefsX.SetLong("PlayerCurrency", currency);
     }
-    public int GetPlayerCurrency()
+    public long GetPlayerCurrency()
     {
-        playerCurrency = PlayerPrefs.GetInt("PlayerCurrency");
+        playerCurrency = RCC_PlayerPrefsX.GetLong("PlayerCurrency");
         return playerCurrency;
     }
 }
