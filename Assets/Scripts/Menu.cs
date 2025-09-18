@@ -1,3 +1,4 @@
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,15 +7,18 @@ using UnityEngine.UI;
 public class Menu : MonoBehaviour
 {
     public GameObject coinAttraction;
-    AdsManagerWrapper ads;
+    Ads_Manager ads;
     public Text playerTotalCurrency;
     public string sceneNameToLoad;
     public float delay;
     public Text hackText;
+    public GameObject fadedImage;
+    public GameObject inappPanel;
+    public int tempValueToCheckInAppPanel=0;
     private void Start()
     {
-        if (AdsManagerWrapper.Instance)
-            ads = AdsManagerWrapper.Instance;
+        if (Ads_Manager.instance)
+            ads = Ads_Manager.instance;
 
         if (ads)
         {
@@ -24,6 +28,28 @@ public class Menu : MonoBehaviour
         }
         BindAllButtons();
         PlayerPrefs.SetInt("Hack", 0);
+        if (PlayerPrefs.GetInt("SessionNumber") > 1)
+        {
+            if (PlayerPrefs.GetInt("UnlockEverything") == 1)
+                return;
+            if (tempValueToCheckInAppPanel % 2 == 0)
+            {
+                inappPanel.SetActive(true);
+            }
+        }
+    }
+    public void IncreaseValueOfTempValueToCheckInApp()
+    {
+        tempValueToCheckInAppPanel++;
+        if (PlayerPrefs.GetInt("SessionNumber") > 1)
+        {
+            if (PlayerPrefs.GetInt("UnlockEverything") == 1)
+                return;
+            if (tempValueToCheckInAppPanel % 2 == 0)
+            {
+                inappPanel.SetActive(true);
+            }
+        }
     }
 
     void ShowingSmallBanner()
@@ -32,6 +58,12 @@ public class Menu : MonoBehaviour
         {
 
         }
+    }
+
+    public void ShowFadedScreen()
+    {
+        fadedImage.SetActive(false);
+        fadedImage.SetActive(true);
     }
     void BindAllButtons()
     {
@@ -61,7 +93,7 @@ public class Menu : MonoBehaviour
     }
     void GiveFreeCash()
     {
-        RCC_PlayerPrefsX.SetLong("PlayerCurrency", RCC_PlayerPrefsX.GetLong("PlayerCurrency") + 200);
+        RCC_PlayerPrefsX.SetLong("PlayerCurrency", RCC_PlayerPrefsX.GetLong("PlayerCurrency") + 500);
         coinAttraction.SetActive(false);
         coinAttraction.SetActive(true);
     }
@@ -85,7 +117,7 @@ public class Menu : MonoBehaviour
     {
         if (ads)
         {
-            ads.ShowAdmobFirst();
+            ads.ShowAdmobInterstitial();
         }
     }
     public void LoadGame()

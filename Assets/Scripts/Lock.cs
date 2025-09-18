@@ -45,9 +45,9 @@ public class Lock : MonoBehaviour
             UnlockMethod();
         else
         {
-            if(AdsManagerWrapper.Instance)
+            if(Ads_Manager.instance)
             {
-                AdsManagerWrapper.Instance.ShowRewardedVideo(UnlockMethod);
+                Ads_Manager.instance.ShowRewardedVideo(UnlockMethod);
             }
         }
     }

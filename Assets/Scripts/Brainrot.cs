@@ -57,6 +57,22 @@ public class Brainrot : MonoBehaviour
             particle.SetActive(true);
         }
         Invoke("SaveStateMethod", 1.0f);
+        if(isAI)
+        {
+            Invoke("PlacedPurchasedCharacter", 2.0f);
+        }
+    }
+
+    void PlacedPurchasedCharacter()
+    {
+        if (PlayerPrefs.GetInt(characterName) == 1 && PlayerPrefs.GetInt("Placed") == 0)
+        {
+            gameObject.SetActive(true);
+            PlaceToAvailablePlace();
+            EnableTriggerCollider(false);
+            StartCoroutine(GenerateMoneyRoutine());
+            PlayerPrefs.SetInt("Placed", 1);
+        }
     }
     void SaveStateMethod()
     {

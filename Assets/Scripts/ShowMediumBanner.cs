@@ -6,16 +6,16 @@ public class ShowMediumBanner : MonoBehaviour
 {
     private void OnEnable()
     {
-        if (AdsManagerWrapper.Instance)
+        if (Ads_Manager.instance)
         {
-            AdsManagerWrapper.Instance.ShowMediumBanner();
+            Ads_Manager.instance.ShowMediumBanner();
         }
     }
     private void OnDisable()
     {
-        if (AdsManagerWrapper.Instance)
+        if (Ads_Manager.instance)
         {
-            AdsManagerWrapper.Instance.HideMediumBanner();
+            Ads_Manager.instance.HideMediumBanner();
         }
     }
 }

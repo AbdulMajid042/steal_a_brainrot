@@ -16,6 +16,10 @@ public class Pickup : MonoBehaviour
     private void Start()
     {
         currentTime = timeToShowVideo;
+        if(PlayerPrefs.GetInt("ItemUnlocked_" + pickupName)==1)
+        {
+            Invoke("GiveReward", 2.5f);
+        }
     //    UpdateTimeText();
     }
 
@@ -80,9 +84,9 @@ public class Pickup : MonoBehaviour
 
     private void ShowRewardedVideo()
     {
-        if(AdsManagerWrapper.Instance)
+        if(Ads_Manager.instance)
         {
-            AdsManagerWrapper.Instance.ShowRewardedVideo(GiveReward);
+            Ads_Manager.instance.ShowRewardedVideo(GiveReward);
         }
     }
     void GiveReward()

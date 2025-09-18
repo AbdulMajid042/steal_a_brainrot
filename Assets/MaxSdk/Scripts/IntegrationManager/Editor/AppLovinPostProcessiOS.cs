@@ -61,6 +61,7 @@ namespace AppLovinMax.Scripts.IntegrationManager.Editor
         private const string KeyConsentFlowEnabled = "ConsentFlowEnabled";
         private const string KeyConsentFlowTermsOfService = "ConsentFlowTermsOfService";
         private const string KeyConsentFlowPrivacyPolicy = "ConsentFlowPrivacyPolicy";
+        private const string KeyConsentFlowShowTermsAndPrivacyPolicyAlertInGDPR = "ConsentFlowShowTermsAndPrivacyPolicyAlertInGDPR";
         private const string KeyConsentFlowDebugUserGeography = "ConsentFlowDebugUserGeography";
 
         private const string KeyAppLovinSdkKeyToRemove = "AppLovinSdkKey";
@@ -73,7 +74,7 @@ namespace AppLovinMax.Scripts.IntegrationManager.Editor
         /// 1. Downloads the Quality Service ruby script.
         /// 2. Runs the script using Ruby which integrates AppLovin Quality Service to the project.
         /// </summary>
-        [PostProcessBuild(int.MaxValue)] // We want to run Quality Service script last.
+        [PostProcessBuild(AppLovinPreProcess.CallbackOrder)] // We want to run Quality Service script last.
         public static void OnPostProcessBuild(BuildTarget buildTarget, string buildPath)
         {
             if (!AppLovinSettings.Instance.QualityServiceEnabled) return;
@@ -446,9 +447,19 @@ namespace AppLovinMax.Scripts.IntegrationManager.Editor
                 project.SetBuildProperty(unityFrameworkTargetGuid, "SWIFT_VERSION", "5.0");
             }
 
-            // Enable Swift modules
-            project.AddBuildProperty(unityFrameworkTargetGuid, "CLANG_ENABLE_MODULES", "YES");
-            project.AddBuildProperty(unityMainTargetGuid, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "YES");
+            // Some publishers may configure these settings in their own post-processing scripts.
+            // Only set them if they haven't already been defined to avoid overwriting publisher-defined values.
+            var enableModules = project.GetBuildPropertyForAnyConfig(unityFrameworkTargetGuid, "CLANG_ENABLE_MODULES");
+            if (string.IsNullOrEmpty(enableModules))
+            {
+                project.SetBuildProperty(unityFrameworkTargetGuid, "CLANG_ENABLE_MODULES", "YES");
+            }
+
+            var alwaysEmbedSwiftLibraries = project.GetBuildPropertyForAnyConfig(unityMainTargetGuid, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES");
+            if (string.IsNullOrEmpty(alwaysEmbedSwiftLibraries))
+            {
+                project.SetBuildProperty(unityMainTargetGuid, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "YES");
+            }
         }
 
         private static void CreateSwiftFile(string swiftFilePath)
@@ -466,14 +477,14 @@ namespace AppLovinMax.Scripts.IntegrationManager.Editor
             }
         }
 
-        [PostProcessBuild(int.MaxValue)]
+        [PostProcessBuild(AppLovinPreProcess.CallbackOrder)]
         public static void MaxPostProcessPlist(BuildTarget buildTarget, string path)
         {
             var plistPath = Path.Combine(path, "Info.plist");
             var plist = new PlistDocument();
             plist.ReadFromFile(plistPath);
 
-            SetAttributionReportEndpointIfNeeded(plist);
+            RemoveAttributionReportEndpointIfNeeded(plist);
 
             EnableVerboseLoggingIfNeeded(plist);
             AddGoogleApplicationIdIfNeeded(plist);
@@ -485,23 +496,16 @@ namespace AppLovinMax.Scripts.IntegrationManager.Editor
             plist.WriteToFile(plistPath);
         }
 
-        private static void SetAttributionReportEndpointIfNeeded(PlistDocument plist)
+        private static void RemoveAttributionReportEndpointIfNeeded(PlistDocument plist)
         {
-            if (AppLovinSettings.Instance.SetAttributionReportEndpoint)
-            {
-                plist.root.SetString("NSAdvertisingAttributionReportEndpoint", AppLovinAdvertisingAttributionEndpoint);
-            }
-            else
-            {
-                PlistElement attributionReportEndPoint;
-                plist.root.values.TryGetValue("NSAdvertisingAttributionReportEndpoint", out attributionReportEndPoint);
+            PlistElement attributionReportEndPoint;
+            plist.root.values.TryGetValue("NSAdvertisingAttributionReportEndpoint", out attributionReportEndPoint);
 
-                // Check if we had previously set the attribution endpoint and un-set it.
-                if (attributionReportEndPoint != null && AppLovinAdvertisingAttributionEndpoint.Equals(attributionReportEndPoint.AsString()))
-                {
-                    plist.root.values.Remove("NSAdvertisingAttributionReportEndpoint");
-                }
-            }
+            // We no longer support this feature. Check if we had previously set the attribution endpoint and un-set it.
+            if (attributionReportEndPoint == null || !AppLovinAdvertisingAttributionEndpoint.Equals(attributionReportEndPoint.AsString())) return;
+
+            MaxSdkLogger.UserWarning("Global SKAdNetwork postback forwarding is no longer supported by AppLovin. Removing AppLovin Advertising Attribution Endpoint from Info.plist.");
+            plist.root.values.Remove("NSAdvertisingAttributionReportEndpoint");
         }
 
         private static void EnableVerboseLoggingIfNeeded(PlistDocument plist)
@@ -575,7 +579,7 @@ namespace AppLovinMax.Scripts.IntegrationManager.Editor
             var unityMainTargetGuid = project.TargetGuidByName(UnityMainTargetName);
 #endif
 
-            var guid = project.AddFile(AppLovinSettingsPlistFileName, AppLovinSettingsPlistFileName, PBXSourceTree.Source);
+            var guid = project.AddFile(AppLovinSettingsPlistFileName, AppLovinSettingsPlistFileName);
             project.AddFileToBuild(unityMainTargetGuid, guid);
             project.WriteToFile(projectPath);
         }
@@ -605,6 +609,9 @@ namespace AppLovinMax.Scripts.IntegrationManager.Editor
             {
                 consentFlowInfoRoot.SetString(KeyConsentFlowTermsOfService, termsOfServiceUrl);
             }
+
+            var shouldShowTermsAndPrivacyPolicyAlertInGdpr = AppLovinInternalSettings.Instance.ShouldShowTermsAndPrivacyPolicyAlertInGDPR;
+            consentFlowInfoRoot.SetBoolean(KeyConsentFlowShowTermsAndPrivacyPolicyAlertInGDPR, shouldShowTermsAndPrivacyPolicyAlertInGdpr);
 
             var debugUserGeography = AppLovinInternalSettings.Instance.DebugUserGeography;
             if (debugUserGeography == MaxSdkBase.ConsentFlowUserGeography.Gdpr)
@@ -679,7 +686,7 @@ namespace AppLovinMax.Scripts.IntegrationManager.Editor
             var installedNetworks = AppLovinPackageManager.GetInstalledMediationNetworks();
             var uriBuilder = new UriBuilder("https://unity.applovin.com/max/1.0/skadnetwork_ids");
             var adNetworks = string.Join(",", installedNetworks.ToArray());
-            if (!string.IsNullOrEmpty(adNetworks))
+            if (MaxSdkUtils.IsValidString(adNetworks))
             {
                 uriBuilder.Query += string.Format("ad_networks={0}", adNetworks);
             }

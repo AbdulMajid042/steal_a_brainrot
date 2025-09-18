@@ -21,15 +21,12 @@ using UnityEngine.Serialization;
 /// </summary>
 public class AppLovinSettings : ScriptableObject
 {
-    public const string SettingsExportPath = "MaxSdk/Resources/AppLovinSettings.asset";
+    private const string SettingsExportPath = "MaxSdk/Resources/AppLovinSettings.asset";
 
-    private static AppLovinSettings instance;
+    private static AppLovinSettings _instance;
 
     [SerializeField] private bool qualityServiceEnabled = true;
     [SerializeField] private string sdkKey;
-
-    [SerializeField] private bool setAttributionReportEndpoint;
-    [SerializeField] private bool addApsSkAdNetworkIds;
 
     [SerializeField] private string customGradleVersionUrl;
     [SerializeField] private string customGradleToolsVersion;
@@ -44,7 +41,7 @@ public class AppLovinSettings : ScriptableObject
     {
         get
         {
-            if (instance == null)
+            if (_instance == null)
             {
                 // Check for an existing AppLovinSettings somewhere in the project
                 var guids = AssetDatabase.FindAssets("AppLovinSettings t:ScriptableObject");
@@ -56,8 +53,8 @@ public class AppLovinSettings : ScriptableObject
                 if (guids.Length != 0)
                 {
                     var path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                    instance = AssetDatabase.LoadAssetAtPath<AppLovinSettings>(path);
-                    return instance;
+                    _instance = AssetDatabase.LoadAssetAtPath<AppLovinSettings>(path);
+                    return _instance;
                 }
 
                 // If there is no existing AppLovinSettings asset, create one in the default location
@@ -89,13 +86,13 @@ public class AppLovinSettings : ScriptableObject
                 // On script reload AssetDatabase.FindAssets() can fail and will overwrite AppLovinSettings without this check
                 if (!File.Exists(settingsFilePath))
                 {
-                    instance = CreateInstance<AppLovinSettings>();
-                    AssetDatabase.CreateAsset(instance, settingsFilePath);
+                    _instance = CreateInstance<AppLovinSettings>();
+                    AssetDatabase.CreateAsset(_instance, settingsFilePath);
                     MaxSdkLogger.D("Creating new AppLovinSettings asset at path: " + settingsFilePath);
                 }
             }
 
-            return instance;
+            return _instance;
         }
     }
 
@@ -115,24 +112,6 @@ public class AppLovinSettings : ScriptableObject
     {
         get { return Instance.sdkKey; }
         set { Instance.sdkKey = value; }
-    }
-
-    /// <summary>
-    /// Whether or not to set `NSAdvertisingAttributionReportEndpoint` in Info.plist.
-    /// </summary>
-    public bool SetAttributionReportEndpoint
-    {
-        get { return Instance.setAttributionReportEndpoint; }
-        set { Instance.setAttributionReportEndpoint = value; }
-    }
-
-    /// <summary>
-    /// Whether or not to add Amazon Publisher Services SKAdNetworkID's.
-    /// </summary>
-    public bool AddApsSkAdNetworkIds
-    {
-        get { return Instance.addApsSkAdNetworkIds; }
-        set { Instance.addApsSkAdNetworkIds = value; }
     }
 
     /// <summary>
@@ -176,6 +155,6 @@ public class AppLovinSettings : ScriptableObject
     /// </summary>
     public void SaveAsync()
     {
-        EditorUtility.SetDirty(instance);
+        EditorUtility.SetDirty(_instance);
     }
 }

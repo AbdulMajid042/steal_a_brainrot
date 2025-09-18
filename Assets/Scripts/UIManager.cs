@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
     public GameObject characterUnlockPanel;
     public Text adDurationText;
 
-    AdsManagerWrapper ads;
+    Ads_Manager ads;
     public string sceneNameToLoad;
     public float delay;
 
@@ -35,23 +35,23 @@ public class UIManager : MonoBehaviour
     {
         if (instance == null)
             instance = this;
+        PlayerPrefs.SetInt("Placed", 0);
     }
     private void Start()
     {
-        if (AdsManagerWrapper.Instance)
-            ads = AdsManagerWrapper.Instance;
+        if (Ads_Manager.instance)
+            ads = Ads_Manager.instance;
 
         if (ads)
         {
             ads.HideMediumBanner();
-       //     ads.ShowSmallBanner();
-       //     ads.ShowSmallBanner2();
         }
 
         startingTime = idleAdTime;
         Invoke("DecreaseTime", 1.0f);
         UpdateAdText();
         BindAllButtons();
+        PlayerPrefs.SetInt("SessionNumber", PlayerPrefs.GetInt("SessionNumber") + 1);
     }
 
     void BindAllButtons()
@@ -188,7 +188,7 @@ public class UIManager : MonoBehaviour
     public void ShowAd()
     {
         if (ads)
-            ads.ShowApplovinFirst();
+            ads.ShowInterstitial();
     }
     public void LoadMenu()
     {
@@ -212,7 +212,7 @@ public class UIManager : MonoBehaviour
     }
     void GiveFreeCash()
     {
-        RCC_PlayerPrefsX.SetLong("PlayerCurrency", RCC_PlayerPrefsX.GetLong("PlayerCurrency") + 200);
+        RCC_PlayerPrefsX.SetLong("PlayerCurrency", RCC_PlayerPrefsX.GetLong("PlayerCurrency") + 500);
         coinAttraction.SetActive(false);
         coinAttraction.SetActive(true);
     }

@@ -9,7 +9,6 @@ public class Splash : MonoBehaviour
     private void Start()
     {
         Invoke("LoadScene", delay);
-
         PlayerPrefs.SetFloat("SoundVolume", 1f);
         PlayerPrefs.SetFloat("MusicVolume", 1f);
         PlayerPrefs.SetFloat("Sensitivity", 0.5f);
@@ -19,19 +18,11 @@ public class Splash : MonoBehaviour
             RCC_PlayerPrefsX.SetLong("PlayerCurrency", 1000);
             PlayerPrefs.SetInt("FirseSession", 1);
         }
-        Invoke("ShowAppOpen", 1.0f);
+
+        PlayerPrefs.SetInt("SessionNumber", PlayerPrefs.GetInt("SessionNumber") + 1);
     }
     void LoadScene()
     {
         SceneManager.LoadScene(sceneNameToLoad);
-    }
-    void ShowAppOpen()
-    {
-        if(AdmobeAdsManager.instance)
-        {
-                AdmobeAdsManager.instance.ShowAppOpenAdAtSplash();
-        }
-        if(AdmobeAdsManager.instance.isSplashAdShown==false)
-            Invoke("ShowAppOpen", 1.0f);
     }
 }

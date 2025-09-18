@@ -102,9 +102,9 @@ public class PlayerInventory : MonoBehaviour
             OnItemButtonClicked();
             return;
         }
-        if (AdsManagerWrapper.Instance)
+        if (Ads_Manager.instance)
         {
-            AdsManagerWrapper.Instance.ShowRewardedVideo(OnItemButtonClicked);
+            Ads_Manager.instance.ShowRewardedVideo(OnItemButtonClicked);
         }
     }
 }

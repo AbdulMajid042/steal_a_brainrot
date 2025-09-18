@@ -32,13 +32,13 @@ public class CharacterUnlockPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        LoadProgress();
+        Invoke("LoadProgress", 0.25f);// LoadProgress();
         UpdateUI();
         buyButton.interactable = true;
         watchAdButton.interactable = true;
 
         watchAdButton.onClick.AddListener(OnWatchAdClicked);
-        buyButton.onClick.AddListener(OnBuyClicked);
+    //    buyButton.onClick.AddListener(OnBuyClicked);
     }
 
     public void UpdateUI()
@@ -82,9 +82,9 @@ public class CharacterUnlockPanel : MonoBehaviour
             OnAdSuccess();
             return;
         }
-        if (AdsManagerWrapper.Instance)
+        if (Ads_Manager.instance)
         {
-            AdsManagerWrapper.Instance.ShowRewardedVideo(OnAdSuccess);
+            Ads_Manager.instance.ShowRewardedVideo(OnAdSuccess);
         }
     }
 
@@ -104,11 +104,16 @@ public class CharacterUnlockPanel : MonoBehaviour
         UpdateUI();
     }
 
-    void OnBuyClicked()
+    public void OnBuyClicked()
     {
         GameObject.FindObjectOfType<IAP_Manager>().BuyCharacter(characterData.inAppString);
+        buyButton.gameObject.SetActive(false);
+        Invoke("EnableButtonAgain", 3.0f);
     }
-
+    void EnableButtonAgain()
+    {
+        buyButton.gameObject.SetActive(true);
+    }
     public void OnIAPSuccess()
     {
         UnlockCharacter();
@@ -142,5 +147,6 @@ public class CharacterUnlockPanel : MonoBehaviour
         string key = characterData.characterName;
         characterData.adsWatched = PlayerPrefs.GetInt(key + "_adsWatched", 0);
         characterData.isUnlocked = PlayerPrefs.GetInt(key + "_unlocked", 0) == 1;
+        UpdateUI();
     }
 }

@@ -96,9 +96,9 @@ public class DailyRewardSystem : MonoBehaviour
 
     public void ClaimTripleReward()
     {
-        if (AdsManagerWrapper.Instance)
+        if (Ads_Manager.instance)
         {
-            AdsManagerWrapper.Instance.ShowRewardedVideo(GiveTrippleReward);
+            Ads_Manager.instance.ShowRewardedVideo(GiveTrippleReward);
         }
     }
 
