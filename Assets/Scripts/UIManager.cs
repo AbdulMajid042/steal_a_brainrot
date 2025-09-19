@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     public GameObject likeAdsPanel;
     public GameObject bonusRewardPanel;
     public GameObject characterUnlockPanel;
+    public GameObject boyCollection, girlCollection;
     public Text adDurationText;
 
     Ads_Manager ads;
@@ -54,6 +55,19 @@ public class UIManager : MonoBehaviour
         PlayerPrefs.SetInt("SessionNumber", PlayerPrefs.GetInt("SessionNumber") + 1);
     }
 
+    public void OpenOutfits()
+    {
+
+        if (PlayerPrefs.GetString("Avatar") == "Boy")
+        {
+            boyCollection.SetActive(true);
+
+        }
+        else
+        {
+            girlCollection.SetActive(true);
+        }
+    }
     void BindAllButtons()
     {
         Button[] allButtons = FindObjectsOfType<Button>(true);

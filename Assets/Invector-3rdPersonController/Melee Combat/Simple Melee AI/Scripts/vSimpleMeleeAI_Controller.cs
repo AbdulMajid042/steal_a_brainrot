@@ -730,37 +730,49 @@ namespace Invector.vCharacterController.AI
         #region Custom Code
         public void ResetCharacter()
         {
-            Invoke("ResetHealthNow", 5);
+            Invoke("ResetHealthNow", 2.5f);
             ApplyForce();
         }
         void ResetHealthNow()
         {
             ResetHealth(maxHealth);
         }
-
-        public float upwardForce = 20f;
-        public float backwardForce = 20f;
-
         public void ApplyForce()
         {
-            Rigidbody rb = GetComponent<Rigidbody>();
-            NavMeshAgent agent = GetComponent<NavMeshAgent>();
-            if (agent != null)
-                agent.enabled = false;
+            Invoke("ApplyForce2", 0.1f);
+        }
+        public float backwardDistance = 100f;
+        public float duration = 2f;
+        public GameObject trailParticle;
 
-            if (rb != null)
-            {
-                rb.AddForce(transform.up * upwardForce, ForceMode.VelocityChange);
-                rb.AddForce(-transform.forward * backwardForce, ForceMode.VelocityChange);
-            }
-            // Re-enable NavMeshAgent after delay
-            StartCoroutine(EnableAgent(agent, 4.0f));
-        }
-        IEnumerator EnableAgent(NavMeshAgent agent, float delay)
+        public void ApplyForce2()
         {
-            yield return new WaitForSeconds(delay);
-            if (agent != null) agent.enabled = true;
+            StartCoroutine(MoveBackwards());
+            if (trailParticle)
+                trailParticle.SetActive(true);
         }
+
+        private IEnumerator MoveBackwards()
+        {
+            
+            Vector3 startPos = transform.position;
+            Vector3 endPos = startPos - transform.forward * backwardDistance;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                transform.position = Vector3.Lerp(startPos, endPos, elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            transform.position = endPos;
+
+            if (trailParticle)
+                trailParticle.SetActive(false);
+
+        }
+
         #endregion
     }
 }

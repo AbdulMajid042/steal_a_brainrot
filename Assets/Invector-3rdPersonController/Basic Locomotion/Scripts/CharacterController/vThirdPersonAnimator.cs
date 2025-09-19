@@ -54,6 +54,8 @@ namespace Invector.vCharacterController
 
         protected virtual void OnEnable()
         {
+            base.Start();
+            RegisterAnimatorStateInfos();
             if (animatorStateInfos.animator != null)
             {
                 animatorStateInfos.RegisterListener();

@@ -348,7 +348,7 @@ namespace Invector.vCharacterController
         {
             if (GetComponent<Player>())
             {
-                if(GetComponent<Player>().stolen!=null)
+                if(GetComponent<Player>().stolen!=null )
                 {
                     GetComponent<Player>().stolen.SetActive(false);
                     GetComponent<Player>().carriedBrainrot = false;
@@ -363,10 +363,20 @@ namespace Invector.vCharacterController
         public float forceAmount = 20f;
         public void ApplyForce()
         {
+            //Rigidbody rb = GetComponent<Rigidbody>();
+            //if (rb != null)
+            //{
+            ////    rb.AddForce(transform.up * forceAmount, ForceMode.VelocityChange);
+            //    rb.AddForce(-transform.forward * forceAmount, ForceMode.VelocityChange);
+            //}
+            Invoke("ApplyForce2", 0.2f);
+        }
+        public void ApplyForce2()
+        {
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddForce(transform.up * forceAmount, ForceMode.VelocityChange);
+                //    rb.AddForce(transform.up * forceAmount, ForceMode.VelocityChange);
                 rb.AddForce(-transform.forward * forceAmount, ForceMode.VelocityChange);
             }
         }
