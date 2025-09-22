@@ -338,6 +338,10 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GRS_FirebaseHandler.Instance.LogIAPPurchased("RemoveAds");
                     iapNumber = 1;
                     PlayerPrefs.SetInt("RemoveAds", 1);
+                    if(GameObject.FindObjectOfType<Menu>())
+                    {
+                        GameObject.FindObjectOfType<Menu>().DeActiveRemoveAds();
+                    }
                     WaitIAP();
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Saturnita)
@@ -411,7 +415,12 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockAllCharacter();
                     if (GameObject.FindObjectOfType<AdminMemerot>())
                         GameObject.FindObjectOfType<AdminMemerot>().UnlockCharacter();
-                        PlayerPrefs.SetInt("RemoveAds", 1);
+                    if (GameObject.FindObjectOfType<Menu>())
+                    {
+                        GameObject.FindObjectOfType<Menu>().DeActiveRemoveAds();
+                        GameObject.FindObjectOfType<Menu>().inappPanel.SetActive(false);
+                    }
+                    PlayerPrefs.SetInt("RemoveAds", 1);
                     WaitIAP();
 
                     PlayerPrefs.SetInt("UnlockEverything", 1);

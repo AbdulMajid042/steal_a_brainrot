@@ -348,7 +348,7 @@ namespace Invector.vCharacterController
         {
             if (GetComponent<Player>())
             {
-                if(GetComponent<Player>().stolen!=null )
+                if(GetComponent<Player>().stolen!=null && (GetComponent<Player>().stolen.GetComponent<Brainrot>().inmyhouse == false))
                 {
                     GetComponent<Player>().stolen.SetActive(false);
                     GetComponent<Player>().carriedBrainrot = false;

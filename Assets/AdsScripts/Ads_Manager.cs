@@ -1074,11 +1074,11 @@ public class Ads_Manager : MonoBehaviour
                 if (PlayerPrefs.GetInt("RemoveAds") != 1)
                 {
                     Debug.Log("......Load calls");
-                    if (isAdmobBanner)
+                    if (isAdmobBanner && PlayerPrefs.GetInt("RemoveAds") == 0)
                     {
                         LoadAdmobSmallBanner();
                     }
-                    if (isAdmobAppOpen)
+                    if (isAdmobAppOpen && PlayerPrefs.GetInt("RemoveAds")==0)
                     {
                         LoadAdmobAppOpenAd();
                     }

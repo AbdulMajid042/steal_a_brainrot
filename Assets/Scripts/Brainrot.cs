@@ -46,6 +46,11 @@ public class Brainrot : MonoBehaviour
 
     public bool isAI;
     public bool isStolen;
+    [Header("           AI Stealing Related")]
+    public bool isStolenbyAI;             //yo
+    public bool sold;                     //yo
+    public bool PlayerTookBack;          //yo
+    public bool inmyhouse;
     private void Start()
     {
     //    moveSpeed = 30;
@@ -111,7 +116,7 @@ public class Brainrot : MonoBehaviour
         #endregion
 
 
-        if (isGeneratingMoney)
+    //    if (isGeneratingMoney)
         {
             generatedMoneyText.text = "$"+generatedMoney.ToString();
         }
@@ -129,6 +134,7 @@ public class Brainrot : MonoBehaviour
 
             moneyGeneratedCollider.SetActive(true);
             StartGeneratingMoney();
+            AIStealingManager.instance.RefreshHouseObjectList();   //yo
         }
     }
     public void SetStat()
@@ -250,6 +256,7 @@ public class Brainrot : MonoBehaviour
 
         spotNumber = -1;
         reachedPointC = false;
+        AIStealingManager.instance.RefreshHouseObjectList();  //yo
     }
 
     public void EnableTriggerCollider(bool status)
@@ -265,6 +272,7 @@ public class Brainrot : MonoBehaviour
             isGeneratingMoney = true;
             StartCoroutine(GenerateMoneyRoutine());
         }
+        inmyhouse = true; //yo
     }
     IEnumerator GenerateMoneyRoutine()
     {

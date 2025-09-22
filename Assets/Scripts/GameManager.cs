@@ -79,6 +79,15 @@ public class GameManager : MonoBehaviour
             girlArmLeft.material = girlsMaterials[index].arm_left;
             EnableChildByName(girlPlayer.transform, girlPropsNames[index]);
         }
+
+        if(UIManager.instance)
+        {
+            UIManager.instance.boyCollection.SetActive(false);
+            UIManager.instance.girlCollection.SetActive(false);
+            UIManager.instance.SetTime(1);
+
+            UIManager.instance.boyCollection.transform.parent.gameObject.SetActive(false);
+        }
     }
     public void Update()
     {

@@ -22,7 +22,8 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Brainrot")
+        GameObject brainRot = other.gameObject;
+        if (other.gameObject.tag == "Brainrot" && (!brainRot.GetComponentInParent<Brainrot>().inmyhouse) && (!brainRot.GetComponentInParent<Brainrot>().isStolenbyAI))
         {
             if (UIManager.instance)
             {
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour
                 {
                     stolen.transform.parent= null;
                     stolen.GetComponent<Brainrot>().PlaceToAvailablePlace();
+                    stolen.GetComponent<Brainrot>().inmyhouse = true;   //yo
                 }
                 carriedBrainrot = false;
             }
@@ -82,7 +84,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (other.gameObject.tag == "BuyCharacterTrigger")
+        if (other.gameObject.tag == "BuyCharacterTrigger" && (!brainRot.GetComponentInParent<Brainrot>().inmyhouse) && (!brainRot.GetComponentInParent<Brainrot>().isStolenbyAI))
         {
             if (UIManager.instance)
             {

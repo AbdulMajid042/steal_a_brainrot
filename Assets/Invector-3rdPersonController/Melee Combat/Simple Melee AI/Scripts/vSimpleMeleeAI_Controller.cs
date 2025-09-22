@@ -750,11 +750,31 @@ namespace Invector.vCharacterController.AI
             StartCoroutine(MoveBackwards());
             if (trailParticle)
                 trailParticle.SetActive(true);
+
+            if (this.gameObject.GetComponent<StealrotAIExtension>())        //yo
+            {
+                if (this.gameObject.GetComponent<StealrotAIExtension>().isCarrying)
+                {
+                    Debug.Log("HIT ");
+                    GameObject Stolenbraintrot = this.gameObject.GetComponentInChildren<Brainrot>().gameObject;
+                    Player.instance.stolen = Stolenbraintrot;
+
+                    UIManager.instance.StealBrainFromAI(Stolenbraintrot);
+                    this.gameObject.GetComponent<StealrotAIExtension>().isCarrying = false;
+                }
+
+            }
+        }
+        public void ThrowThisAI()
+        {
+            if(GameObject.Find("MidPoint"))
+            {
+                transform.position = GameObject.Find("MidPoint").transform.position;
+            }
         }
 
         private IEnumerator MoveBackwards()
         {
-            
             Vector3 startPos = transform.position;
             Vector3 endPos = startPos - transform.forward * backwardDistance;
             float elapsed = 0f;

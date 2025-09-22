@@ -403,7 +403,7 @@ namespace Invector.vCharacterController.AI
             //if (Physics.SphereCast(ray2, radius, out groundHit, _capsuleCollider.bounds.max.y - (_capsuleCollider.radius * 0.1f), groundLayer))
             if (Physics.SphereCast(ray2, radius, out groundHit, headDetect - (_capsuleCollider.radius * 0.1f), autoCrouchLayer))
             {
-                isCrouched = true;
+                isCrouched = false;
             }
             else
             {

@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     public GameObject notEnoughMoney;
     public GameObject coinAttraction;
     public Image lockCircle;
+    public Text stealingText, stolenText;
 
     [Header("           Ads Panel. References")]
     public GameObject likeAdsPanel;
@@ -68,6 +69,7 @@ public class UIManager : MonoBehaviour
             girlCollection.SetActive(true);
         }
     }
+
     void BindAllButtons()
     {
         Button[] allButtons = FindObjectsOfType<Button>(true);
@@ -142,6 +144,8 @@ public class UIManager : MonoBehaviour
                 {
                     AudioManager.instance.PlayGenericSound(AudioManager.instance.positiveSfx);
                 }
+
+                AIStealingManager.instance.RefreshHouseObjectList();   //yo
             }
             else
             {
@@ -157,6 +161,7 @@ public class UIManager : MonoBehaviour
     public void SellBrainrot()
     {
         var brainrot = Player.instance.currentBrainrot.GetComponent<Brainrot>();
+        brainrot.sold = true; //yo
         PriceManager.instance.SetCurrency(brainrot.priceValue);
         brainrot.SellCharacter();                // frees the spot + stops generation
         Player.instance.currentBrainrot.SetActive(false);
@@ -173,6 +178,19 @@ public class UIManager : MonoBehaviour
         stolen.transform.parent = Player.instance.stolenBrainrotsTransform;
         stolen.transform.localPosition = Vector3.zero;
         stolen.transform.localEulerAngles = Vector3.zero;
+    }
+
+    public void StealBrainFromAI(GameObject Obj)  //yo
+    {
+        Player.instance.carriedBrainrot = true;
+        Obj.GetComponentInChildren<Collider>().enabled = false;
+        Obj.GetComponentInChildren<Brainrot>().isStolen = true;
+        Obj.transform.parent = Player.instance.stolenBrainrotsTransform;
+        Obj.transform.localPosition = Vector3.zero;
+        Obj.transform.localEulerAngles = Vector3.zero;
+        Obj.GetComponent<Brainrot>().isStolenbyAI = false;
+        Obj.GetComponentInChildren<Brainrot>().PlayerTookBack = true;
+        Obj.GetComponent<StealrotAIExtension>().DropCarriedObject();
     }
     public void UnlockHouse()
     {

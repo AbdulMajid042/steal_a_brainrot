@@ -15,6 +15,7 @@ public class Menu : MonoBehaviour
     public GameObject fadedImage;
     public GameObject inappPanel;
     public int tempValueToCheckInAppPanel=0;
+    public GameObject removeAdsBtn;
     private void Start()
     {
         if (Ads_Manager.instance)
@@ -23,20 +24,29 @@ public class Menu : MonoBehaviour
         if (ads)
         {
             ads.HideMediumBanner();
-       //     ads.ShowSmallBanner();
-        //    ads.ShowSmallBanner2();
         }
         BindAllButtons();
         PlayerPrefs.SetInt("Hack", 0);
         if (PlayerPrefs.GetInt("SessionNumber") > 1)
         {
             if (PlayerPrefs.GetInt("UnlockEverything") == 1)
+            {
+                DeActiveRemoveAds();
                 return;
+            }
             if (tempValueToCheckInAppPanel % 2 == 0)
             {
                 inappPanel.SetActive(true);
             }
         }
+        if(PlayerPrefs.GetInt("RemoveAds") ==1)
+        {
+            DeActiveRemoveAds();
+        }
+    }
+    public void DeActiveRemoveAds()
+    {
+        removeAdsBtn.SetActive(false);
     }
     public void IncreaseValueOfTempValueToCheckInApp()
     {
