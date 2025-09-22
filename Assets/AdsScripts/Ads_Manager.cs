@@ -333,7 +333,7 @@ public class Ads_Manager : MonoBehaviour
             new Parameter("ad_source", adapterInfo.AdSourceName),
             new Parameter("ad_unit_name", adUnitId),
             new Parameter("ad_format", AdName),
-            new Parameter("value", revenue),
+            new Parameter("value", revenue* drainrot_revenue_multiplier),
             new Parameter("currency", adValue.CurrencyCode)
         };
 
