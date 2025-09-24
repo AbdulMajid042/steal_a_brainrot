@@ -22,6 +22,7 @@ public class PriceManager : MonoBehaviour
         {
             RCC_PlayerPrefsX.SetLong("PlayerCurrency", dummyReward);
         }
+
     }
     private void Update()
     {

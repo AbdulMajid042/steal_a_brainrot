@@ -163,6 +163,12 @@ public class Ads_Manager : MonoBehaviour
             adsStatus = AdType.NoAds;
         }
 
+        if (SystemInfo.systemMemorySize <= 3072)
+        {
+            QualitySettings.SetQualityLevel(0, true);
+        }
+
+
 
         switch (_AdmobBannerSize)
         {
@@ -249,13 +255,14 @@ public class Ads_Manager : MonoBehaviour
                     {
                         InitializeSmallBanner();
                         InitializeSmallBanner2();
+                        InitializeMediumBanner();
                     }
-                    InitializeSmallBanner2();
+                //    InitializeSmallBanner2();
                     if (!isAdmobAppOpen)
                     {
                         InitializeAppOppen();
                     }
-                    InitializeMediumBanner();
+                    
                     InitializeInterstitialAds();
                 }
                 InitializeRewardedAds();
@@ -286,15 +293,59 @@ public class Ads_Manager : MonoBehaviour
     }
 
     #endregion
+    #region InApp Purchase Reporting
 
-    #region AppsFlyer Event Initilization
-
-    private void OnAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo impressionData)
+    /// <summary>
+    /// Report in-app purchase revenue to Firebase and AppsFlyer
+    /// </summary>
+    /// <param name="productId">The purchased product ID (SKU)</param>
+    /// <param name="currency">Currency code (e.g. "USD")</param>
+    /// <param name="price">Price paid in that currency</param>
+    public void ReportInAppPurchase(string productId, string currency, double price)
     {
+        Debug.Log($"[IAP REPORT] Product: {productId}, Price: {price} {currency}");
+
+        // --- Firebase Analytics ---
+        var purchaseParams = new[]
+        {
+        new Firebase.Analytics.Parameter(Firebase.Analytics.FirebaseAnalytics.ParameterCurrency, currency),
+        new Firebase.Analytics.Parameter(Firebase.Analytics.FirebaseAnalytics.ParameterValue, price),
+        new Firebase.Analytics.Parameter(Firebase.Analytics.FirebaseAnalytics.ParameterItemId, productId),
+        new Firebase.Analytics.Parameter("source", "inapp_purchase")
+    };
+        Firebase.Analytics.FirebaseAnalytics.LogEvent(Firebase.Analytics.FirebaseAnalytics.EventPurchase, purchaseParams);
+
+        // --- AppsFlyer (IAP revenue logging) ---
+        Dictionary<string, string> additionalParams = new Dictionary<string, string>();
+        additionalParams.Add(AFInAppEvents.REVENUE, price.ToString());
+        additionalParams.Add(AFInAppEvents.CURRENCY, currency);
+        additionalParams.Add(AFInAppEvents.CONTENT_ID, productId);
+        AppsFlyer.sendEvent(AFInAppEvents.PURCHASE, additionalParams);
+    }
+    #endregion
+    #region AppsFlyer Event Initilization
+    public bool showEventBanner=true;
+    public double rev = 0; string id="";
+    private void OnAdRevenuePaidEventBanner1(string adUnitId, MaxSdkBase.AdInfo impressionData)
+    {
+        if (adUnitId == id && impressionData.Revenue == rev)
+            return;
+        rev = impressionData.Revenue;
+        id = adUnitId;
+
+
+        if (!showEventBanner)
+            return;
+
+        showEventBanner = false;
+        Invoke("EnableBannerOneEventAgain", 0.1f);
+        //if (impressionData.NetworkName == "Google AdMob")
+        //    return;
+
+
         double revenue = impressionData.Revenue;
         var impressionParameters = new[]
         {
-
                 new Firebase.Analytics.Parameter("ad_platform", "AppLovin"),
                 new Firebase.Analytics.Parameter("ad_source", impressionData.NetworkName),
                 new Firebase.Analytics.Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
@@ -302,6 +353,197 @@ public class Ads_Manager : MonoBehaviour
                 new Firebase.Analytics.Parameter("value", revenue * drainrot_revenue_multiplier),
                 new Firebase.Analytics.Parameter("currency", "USD"), // All Applovin revenue is sent in USD
         };
+
+    //    Debug.LogError("Format:" + impressionData.AdFormat + " Netwok:" + impressionData.NetworkName + " rev:" + revenue + " ID:" + impressionData.AdUnitIdentifier);
+
+        //if (FbAnalytics.Instance.firebaseInitialized)
+        {
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
+        }
+
+        Dictionary<string, string> additionalParams = new Dictionary<string, string>();
+        additionalParams.Add(AFAdRevenueEvent.AD_UNIT, impressionData.AdUnitIdentifier);
+        additionalParams.Add(AFAdRevenueEvent.AD_TYPE, impressionData.AdFormat);
+        AppsFlyerAdRevenue.logAdRevenue(impressionData.NetworkName,
+                                AppsFlyerAdRevenueMediationNetworkType.AppsFlyerAdRevenueMediationNetworkTypeApplovinMax,
+                                impressionData.Revenue * drainrot_revenue_multiplier,
+                                "USD",
+                                additionalParams);
+
+    }
+    void EnableBannerOneEventAgain()
+    {
+        showEventBanner = true;
+    }
+    private void OnAdRevenuePaidEventBanner2(string adUnitId, MaxSdkBase.AdInfo impressionData)
+    {
+        //if (impressionData.NetworkName == "Google AdMob")
+        //    return;
+
+        if (adUnitId == id && impressionData.Revenue == rev)
+            return;
+        rev = impressionData.Revenue;
+        id = adUnitId;
+
+        if (!showEventBanner)
+            return;
+
+        showEventBanner = false;
+        Invoke("EnableBannerTwoEventAgain", 0.1f);
+
+        double revenue = impressionData.Revenue;
+        var impressionParameters = new[]
+        {
+                new Firebase.Analytics.Parameter("ad_platform", "AppLovin"),
+                new Firebase.Analytics.Parameter("ad_source", impressionData.NetworkName),
+                new Firebase.Analytics.Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
+                new Firebase.Analytics.Parameter("ad_format", impressionData.AdFormat),
+                new Firebase.Analytics.Parameter("value", revenue * drainrot_revenue_multiplier),
+                new Firebase.Analytics.Parameter("currency", "USD"), // All Applovin revenue is sent in USD
+        };
+
+    //    Debug.LogError("Format:" + impressionData.AdFormat + " Netwok:" + impressionData.NetworkName + " rev:" + revenue + " ID:" + impressionData.AdUnitIdentifier);
+
+        //if (FbAnalytics.Instance.firebaseInitialized)
+        {
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
+        }
+
+        Dictionary<string, string> additionalParams = new Dictionary<string, string>();
+        additionalParams.Add(AFAdRevenueEvent.AD_UNIT, impressionData.AdUnitIdentifier);
+        additionalParams.Add(AFAdRevenueEvent.AD_TYPE, impressionData.AdFormat);
+        AppsFlyerAdRevenue.logAdRevenue(impressionData.NetworkName,
+                                AppsFlyerAdRevenueMediationNetworkType.AppsFlyerAdRevenueMediationNetworkTypeApplovinMax,
+                                impressionData.Revenue * drainrot_revenue_multiplier,
+                                "USD",
+                                additionalParams);
+
+    }
+    void EnableBannerTwoEventAgain()
+    {
+        showEventBanner = true;
+    }
+    private void OnAdRevenuePaidEventBannerMRec(string adUnitId, MaxSdkBase.AdInfo impressionData)
+    {
+        //if (impressionData.NetworkName == "Google AdMob")
+        //    return;
+       
+        Invoke("EnableBannerMRecEventAgain", 2.0f);
+
+        double revenue = impressionData.Revenue;
+        var impressionParameters = new[]
+        {
+                new Firebase.Analytics.Parameter("ad_platform", "AppLovin"),
+                new Firebase.Analytics.Parameter("ad_source", impressionData.NetworkName),
+                new Firebase.Analytics.Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
+                new Firebase.Analytics.Parameter("ad_format", impressionData.AdFormat),
+                new Firebase.Analytics.Parameter("value", revenue * drainrot_revenue_multiplier),
+                new Firebase.Analytics.Parameter("currency", "USD"), // All Applovin revenue is sent in USD
+        };
+
+        Debug.LogError("Format:" + impressionData.AdFormat + " Netwok:" + impressionData.NetworkName + " rev:" + revenue + " ID:" + impressionData.AdUnitIdentifier);
+
+        //if (FbAnalytics.Instance.firebaseInitialized)
+        {
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
+        }
+
+        Dictionary<string, string> additionalParams = new Dictionary<string, string>();
+        additionalParams.Add(AFAdRevenueEvent.AD_UNIT, impressionData.AdUnitIdentifier);
+        additionalParams.Add(AFAdRevenueEvent.AD_TYPE, impressionData.AdFormat);
+        AppsFlyerAdRevenue.logAdRevenue(impressionData.NetworkName,
+                                AppsFlyerAdRevenueMediationNetworkType.AppsFlyerAdRevenueMediationNetworkTypeApplovinMax,
+                                impressionData.Revenue * drainrot_revenue_multiplier,
+                                "USD",
+                                additionalParams);
+    }
+
+    private void OnAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo impressionData)
+    {
+        //if (impressionData.NetworkName == "Google AdMob")
+        //    return;
+
+
+        double revenue = impressionData.Revenue;
+        var impressionParameters = new[]
+        {
+                new Firebase.Analytics.Parameter("ad_platform", "AppLovin"),
+                new Firebase.Analytics.Parameter("ad_source", impressionData.NetworkName),
+                new Firebase.Analytics.Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
+                new Firebase.Analytics.Parameter("ad_format", impressionData.AdFormat),
+                new Firebase.Analytics.Parameter("value", revenue * drainrot_revenue_multiplier),
+                new Firebase.Analytics.Parameter("currency", "USD"), // All Applovin revenue is sent in USD
+        };
+
+        Debug.LogError("Format:"+ impressionData.AdFormat+" Netwok:" + impressionData.NetworkName + " rev:" + revenue+" ID:"+ impressionData.AdUnitIdentifier);
+
+        //if (FbAnalytics.Instance.firebaseInitialized)
+        {
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
+        }
+
+        Dictionary<string, string> additionalParams = new Dictionary<string, string>();
+        additionalParams.Add(AFAdRevenueEvent.AD_UNIT, impressionData.AdUnitIdentifier);
+        additionalParams.Add(AFAdRevenueEvent.AD_TYPE, impressionData.AdFormat);
+        AppsFlyerAdRevenue.logAdRevenue(impressionData.NetworkName,
+                                AppsFlyerAdRevenueMediationNetworkType.AppsFlyerAdRevenueMediationNetworkTypeApplovinMax,
+                                impressionData.Revenue * drainrot_revenue_multiplier,
+                                "USD",
+                                additionalParams);
+    }
+
+    private void OnAdRevenuePaidEventAppOpen(string adUnitId, MaxSdkBase.AdInfo impressionData)
+    {
+        //if (impressionData.NetworkName == "Google AdMob")
+        //    return;
+
+
+        double revenue = impressionData.Revenue;
+        var impressionParameters = new[]
+        {
+                new Firebase.Analytics.Parameter("ad_platform", "AppLovin"),
+                new Firebase.Analytics.Parameter("ad_source", impressionData.NetworkName),
+                new Firebase.Analytics.Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
+                new Firebase.Analytics.Parameter("ad_format", impressionData.AdFormat),
+                new Firebase.Analytics.Parameter("value", revenue * drainrot_revenue_multiplier),
+                new Firebase.Analytics.Parameter("currency", "USD"), // All Applovin revenue is sent in USD
+        };
+
+        Debug.LogError("Format:" + impressionData.AdFormat + " Netwok:" + impressionData.NetworkName + " rev:" + revenue + " ID:" + impressionData.AdUnitIdentifier);
+
+        //if (FbAnalytics.Instance.firebaseInitialized)
+        {
+            Firebase.Analytics.FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
+        }
+
+        Dictionary<string, string> additionalParams = new Dictionary<string, string>();
+        additionalParams.Add(AFAdRevenueEvent.AD_UNIT, impressionData.AdUnitIdentifier);
+        additionalParams.Add(AFAdRevenueEvent.AD_TYPE, impressionData.AdFormat);
+        AppsFlyerAdRevenue.logAdRevenue(impressionData.NetworkName,
+                                AppsFlyerAdRevenueMediationNetworkType.AppsFlyerAdRevenueMediationNetworkTypeApplovinMax,
+                                impressionData.Revenue * drainrot_revenue_multiplier,
+                                "USD",
+                                additionalParams);
+    }
+
+    private void OnAdRevenuePaidEventRewarded(string adUnitId, MaxSdkBase.AdInfo impressionData)
+    {
+        //if (impressionData.NetworkName == "Google AdMob")
+        //    return;
+
+
+        double revenue = impressionData.Revenue;
+        var impressionParameters = new[]
+        {
+                new Firebase.Analytics.Parameter("ad_platform", "AppLovin"),
+                new Firebase.Analytics.Parameter("ad_source", impressionData.NetworkName),
+                new Firebase.Analytics.Parameter("ad_unit_name", impressionData.AdUnitIdentifier),
+                new Firebase.Analytics.Parameter("ad_format", impressionData.AdFormat),
+                new Firebase.Analytics.Parameter("value", revenue * drainrot_revenue_multiplier),
+                new Firebase.Analytics.Parameter("currency", "USD"), // All Applovin revenue is sent in USD
+        };
+
+        Debug.LogError("Format:" + impressionData.AdFormat + " Netwok:" + impressionData.NetworkName + " rev:" + revenue + " ID:" + impressionData.AdUnitIdentifier);
 
         //if (FbAnalytics.Instance.firebaseInitialized)
         {
@@ -359,7 +601,8 @@ public class Ads_Manager : MonoBehaviour
         MaxSdkCallbacks.Banner.OnAdLoadedEvent += OnBannerAdLoadedEvent;
         MaxSdkCallbacks.Banner.OnAdLoadFailedEvent += OnBannerAdFailedEvent;
         MaxSdkCallbacks.Banner.OnAdClickedEvent += OnBannerAdClickedEvent;
-        MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent += OnAdRevenuePaidEvent;
+        MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent -= OnAdRevenuePaidEventBanner1;
+        MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent += OnAdRevenuePaidEventBanner1;
         //LoadSmallBanner();
     }
 
@@ -449,7 +692,9 @@ public class Ads_Manager : MonoBehaviour
         MaxSdkCallbacks.Banner.OnAdLoadedEvent += OnBannerAdLoadedEvent2;
         MaxSdkCallbacks.Banner.OnAdLoadFailedEvent += OnBannerAdFailedEvent2;
         MaxSdkCallbacks.Banner.OnAdClickedEvent += OnBannerAdClickedEvent2;
-        MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent += OnAdRevenuePaidEvent;
+        MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent -= OnAdRevenuePaidEventBanner2;
+        MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent += OnAdRevenuePaidEventBanner2;
+
         LoadSmallBanner2();
     }
 
@@ -537,7 +782,7 @@ public class Ads_Manager : MonoBehaviour
         MaxSdkCallbacks.MRec.OnAdLoadedEvent += OnMRecAdLoadedEvent;
         MaxSdkCallbacks.MRec.OnAdLoadFailedEvent += OnMRecAdFailedEvent;
         MaxSdkCallbacks.MRec.OnAdClickedEvent += OnMRecAdClickedEvent;
-        MaxSdkCallbacks.MRec.OnAdRevenuePaidEvent += OnAdRevenuePaidEvent;
+        MaxSdkCallbacks.MRec.OnAdRevenuePaidEvent += OnAdRevenuePaidEventBannerMRec;
 
         //LoadMediumBanner();
     }
@@ -753,7 +998,7 @@ public class Ads_Manager : MonoBehaviour
         MaxSdkCallbacks.Rewarded.OnAdClickedEvent += OnRewardedAdClickedEvent;
         MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnRewardedAdDismissedEvent;
         MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
-        MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnAdRevenuePaidEvent;
+        MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnAdRevenuePaidEventRewarded;
 
         // Load the first RewardedAd
         LoadRewardedVideo();
@@ -902,7 +1147,7 @@ public class Ads_Manager : MonoBehaviour
         //Initialize AppOppen AD
         MaxSdkCallbacks.AppOpen.OnAdHiddenEvent += OnAppOpenDismissedEvent;
         MaxSdkCallbacks.AppOpen.OnAdClickedEvent += OnAppOpenClickedEvent;
-        MaxSdkCallbacks.AppOpen.OnAdRevenuePaidEvent += OnAdRevenuePaidEvent;
+        MaxSdkCallbacks.AppOpen.OnAdRevenuePaidEvent += OnAdRevenuePaidEventAppOpen;
         MaxSdkCallbacks.AppOpen.OnAdLoadedEvent += OnAppOpenLoadedEvent;
 
         //LoadAppOpen();

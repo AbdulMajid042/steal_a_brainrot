@@ -529,7 +529,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3818087096475503953}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.075380474, y: 0.075380474, z: 0.075380474}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -537,8 +537,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.501}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: -0.0607, y: 0.501}
+  m_SizeDelta: {x: 52.2348, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &6955807866562617698
 MeshRenderer:
@@ -560,7 +560,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  - {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -604,15 +604,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 3$/sec
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
-  m_sharedMaterial: {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
+  m_sharedMaterial: {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255396
-  m_fontColor: {r: 0.13948512, g: 1, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10362,8 +10362,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.841}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: 0.0098, y: 0.8532}
+  m_SizeDelta: {x: 52.7142, y: 5.3243}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7292325005104626814
 MeshRenderer:
@@ -10385,7 +10385,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  - {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10429,15 +10429,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Price: 0$'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
-  m_sharedMaterial: {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
+  m_sharedMaterial: {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255396
-  m_fontColor: {r: 0.13948512, g: 1, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10534,7 +10534,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 1.199}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 38, y: 6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5657125627634893393
 MeshRenderer:
@@ -10556,7 +10556,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  - {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10600,8 +10600,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ABC
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
-  m_sharedMaterial: {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
+  m_sharedMaterial: {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10876,6 +10876,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea3193c524ecfe84e8144dec989ebb97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  brainrotType: 0
+  showDummyValue: 0
+  dummyPrice: 
+  dummyMoneyGenerationValue: 
   infoTransform: {fileID: 2641012246661809649}
   characterName: Larila
   priceValue: 250
@@ -10896,6 +10900,10 @@ MonoBehaviour:
   isLast: 0
   isAI: 0
   isStolen: 0
+  isStolenbyAI: 0
+  sold: 0
+  PlayerTookBack: 0
+  inmyhouse: 0
 --- !u!114 &5208678990810864022
 MonoBehaviour:
   m_ObjectHideFlags: 0

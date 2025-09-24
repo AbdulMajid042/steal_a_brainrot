@@ -5,6 +5,16 @@ using UnityEngine;
 
 public class Brainrot : MonoBehaviour
 {
+    public enum BrainrotType
+    {
+        Ordinary,
+        Gold,
+        Diamond,
+        Rainbow
+    }
+    [Header("           Character Type")]
+    public BrainrotType brainrotType;
+
     [Header("           Stats")]
     public bool showDummyValue;
     public string dummyPrice, dummyMoneyGenerationValue;
@@ -53,7 +63,12 @@ public class Brainrot : MonoBehaviour
     public bool inmyhouse;
     private void Start()
     {
-    //    moveSpeed = 30;
+        //    moveSpeed = 30;
+
+        if (brainrotType == BrainrotType.Gold)
+        {
+            moneyGenerationValue = (long)(moneyGenerationValue * 1.25f);
+        }
         SetStat();
         SetPoints();
         SetCamera();
@@ -266,7 +281,13 @@ public class Brainrot : MonoBehaviour
     }
     void StartGeneratingMoney()
     {
-        transform.localEulerAngles = pointC.eulerAngles;
+        if(GetComponent<BuyThisCharacter>())
+        {
+            transform.localEulerAngles = pointC.eulerAngles;
+        }else
+        {
+            transform.localEulerAngles = pointC.localEulerAngles;
+        }
         if (!isGeneratingMoney) // prevent multiple coroutines
         {
             isGeneratingMoney = true;
