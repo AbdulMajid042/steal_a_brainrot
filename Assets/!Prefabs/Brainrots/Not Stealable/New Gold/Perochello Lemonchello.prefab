@@ -5276,7 +5276,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4973068992975482297}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5483,7 +5483,7 @@ GameObject:
   - component: {fileID: 1020860125579545465}
   - component: {fileID: 4801454868302673944}
   - component: {fileID: 3361191524306764556}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5750,7 +5750,7 @@ GameObject:
   - component: {fileID: 2717951035919786276}
   - component: {fileID: 1716283638746951083}
   - component: {fileID: 2944895121186350332}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: MoneyGeneration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6163,7 +6163,7 @@ GameObject:
   - component: {fileID: 3223894368942061536}
   - component: {fileID: 525470794039379099}
   - component: {fileID: 8242778365928063387}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Price
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6524,7 +6524,7 @@ MonoBehaviour:
   priceText: {fileID: 8242778365928063387}
   moneyGenerationText: {fileID: 2944895121186350332}
   generatedMoneyText: {fileID: 7855828095679081150}
-  moveSpeed: 1.6
+  moveSpeed: 3
   pointC: {fileID: 0}
   triggerCollider: {fileID: 6182886837698301620}
   moneyGeneratedCollider: {fileID: 7196323764108910123}

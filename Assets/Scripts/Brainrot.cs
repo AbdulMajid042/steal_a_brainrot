@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -24,7 +23,7 @@ public class Brainrot : MonoBehaviour
 
     [Header("           Text Fields")]
     public TextMeshPro nameText;
-    public TextMeshPro priceText, moneyGenerationText,generatedMoneyText;
+    public TextMeshPro priceText, moneyGenerationText, generatedMoneyText;
 
 
     [Header("           Movement")]
@@ -36,7 +35,7 @@ public class Brainrot : MonoBehaviour
 
     [Header("           Misc. References")]
 
-    public GameObject triggerCollider,moneyGeneratedCollider;
+    public GameObject triggerCollider, moneyGeneratedCollider;
     public GameObject particle;
     private Transform currentTarget;
     private Animator animator;
@@ -72,12 +71,12 @@ public class Brainrot : MonoBehaviour
         SetStat();
         SetPoints();
         SetCamera();
-        if(particle)
+        if (particle)
         {
             particle.SetActive(true);
         }
         Invoke("SaveStateMethod", 1.0f);
-        if(isAI)
+        if (isAI)
         {
             Invoke("PlacedPurchasedCharacter", 2.0f);
         }
@@ -105,40 +104,37 @@ public class Brainrot : MonoBehaviour
 
     private void Update()
     {
-        #region for Not AI Brainrots
-        if (!isAI)
+        if (frameCounter % 3 == 0)
         {
-            if (!isBought)
+            #region for Not AI Brainrots
+            if (!isAI)
             {
-                MoveBetweenPoints(); // looping A  B
+                if (!isBought)
+                {
+                    MoveBetweenPoints(); // looping A  B
+                }
+                else if (!reachedPointC)
+                {
+                    MoveToPointC(); // after purchase
+                }
             }
-            else if (!reachedPointC)
+            else
             {
-                MoveToPointC(); // after purchase
+                if (animator)
+                    animator.SetBool("IsMove", false);
             }
-
-            frameCounter++;
-            if (frameCounter % 10 == 0 && targetCamera)
-            {
-                infoTransform.LookAt(targetCamera.transform);
-            }
+            generatedMoneyText.text = "$" + generatedMoney.ToString();
+            #endregion
         }
-        else
+        frameCounter++;
+        if (frameCounter % 10 == 0 && targetCamera)
         {
-            if (animator)
-                animator.SetBool("IsMove", false);
-        }
-        #endregion
-
-
-    //    if (isGeneratingMoney)
-        {
-            generatedMoneyText.text = "$"+generatedMoney.ToString();
+            infoTransform.LookAt(targetCamera.transform);
         }
     }
     public void PlaceToAvailablePlace()
     {
-        if(isAI)
+        if (isAI)
         {
             MyHouse.instance.TryReserveFirstFreePlace(out spotNumber, out pointC);
             transform.position = pointC.position;
@@ -181,10 +177,10 @@ public class Brainrot : MonoBehaviour
 
     void SetPoints()
     {
-     //   pointA = GameObject.Find("pointA").transform;
+        //   pointA = GameObject.Find("pointA").transform;
         originalPosition = transform.position;
         pointB = GameObject.Find("pointB").transform;
-    //    transform.position = pointA.position;
+        //    transform.position = pointA.position;
         currentTarget = pointB;
     }
 
@@ -213,12 +209,20 @@ public class Brainrot : MonoBehaviour
         if (Vector3.Distance(transform.position, pointB.position) < 0.05f)
         {
             if (isLast)
-                PlayerPrefs.SetInt("LastReached",1);
-            if (PlayerPrefs.GetInt("LastReached")==1)
+            {
+                PlayerPrefs.SetInt("LastReached", 1);
+                Invoke("TempMethod", 2.0f);
+            }
+            if (PlayerPrefs.GetInt("LastReached") == 1)
             {
                 transform.position = originalPosition;
             }
         }
+    }
+
+    void TempMethod()
+    {
+        PlayerPrefs.SetInt("LastReached", 0);
     }
     void MoveToPointC()
     {
@@ -281,10 +285,11 @@ public class Brainrot : MonoBehaviour
     }
     void StartGeneratingMoney()
     {
-        if(GetComponent<BuyThisCharacter>())
+        if (GetComponent<BuyThisCharacter>())
         {
             transform.localEulerAngles = pointC.eulerAngles;
-        }else
+        }
+        else
         {
             transform.localEulerAngles = pointC.localEulerAngles;
         }

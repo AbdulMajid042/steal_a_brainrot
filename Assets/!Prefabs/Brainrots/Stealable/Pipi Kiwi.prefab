@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 248305011658134704}
   - component: {fileID: 8140864092952989999}
   - component: {fileID: 4292676524674729432}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Price
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,8 +177,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.841}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: 0.0098, y: 0.8532}
+  m_SizeDelta: {x: 52.7142, y: 5.3243}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8140864092952989999
 MeshRenderer:
@@ -200,7 +200,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  - {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -244,15 +244,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Price: 0$'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
-  m_sharedMaterial: {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
+  m_sharedMaterial: {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255396
-  m_fontColor: {r: 0.13948512, g: 1, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -583,7 +583,7 @@ GameObject:
   - component: {fileID: 752773558331976835}
   - component: {fileID: 5132367026291843841}
   - component: {fileID: 3096831759318565627}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: MoneyGeneration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -598,7 +598,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2159694543429699399}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.075380474, y: 0.075380474, z: 0.075380474}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -606,8 +606,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.501}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: -0.0607, y: 0.501}
+  m_SizeDelta: {x: 52.2348, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5132367026291843841
 MeshRenderer:
@@ -629,7 +629,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  - {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -673,15 +673,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 3$/sec
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
-  m_sharedMaterial: {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
+  m_sharedMaterial: {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255396
-  m_fontColor: {r: 0.13948512, g: 1, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10692,7 +10692,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7551134119756527161}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071067, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 3.739016, y: -0.3130002, z: 1.390992}
   m_LocalScale: {x: 0.60000014, y: 0.6, z: 0.60000014}
   m_ConstrainProportionsScale: 0
@@ -10703,7 +10703,7 @@ Transform:
   - {fileID: 7190803206864144627}
   - {fileID: 4442363997200742764}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!95 &4263841247296640740
 Animator:
   serializedVersion: 5
@@ -10737,6 +10737,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea3193c524ecfe84e8144dec989ebb97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  brainrotType: 0
+  showDummyValue: 0
+  dummyPrice: 
+  dummyMoneyGenerationValue: 
   infoTransform: {fileID: 7188612997540162505}
   characterName: Pipi Kiwi
   priceValue: 1500
@@ -10749,7 +10753,7 @@ MonoBehaviour:
   pointC: {fileID: 0}
   triggerCollider: {fileID: 5760357077522046613}
   moneyGeneratedCollider: {fileID: 4634070280887274373}
-  particle: {fileID: 1990915655572788182}
+  particle: {fileID: 0}
   isBought: 0
   isGeneratingMoney: 0
   generatedMoney: 0
@@ -10757,6 +10761,10 @@ MonoBehaviour:
   isLast: 0
   isAI: 1
   isStolen: 0
+  isStolenbyAI: 0
+  sold: 0
+  PlayerTookBack: 0
+  inmyhouse: 0
 --- !u!114 &5696338828722531208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13140,7 +13148,7 @@ GameObject:
   - component: {fileID: 7199762099512062892}
   - component: {fileID: 4933805780641983305}
   - component: {fileID: 2826063080502642686}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13164,7 +13172,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 1.199}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 38, y: 6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4933805780641983305
 MeshRenderer:
@@ -13186,7 +13194,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  - {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13230,8 +13238,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ABC
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
-  m_sharedMaterial: {fileID: -4950432876610126164, guid: 5543459bf6fc76c409c0e0bf68be600d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
+  m_sharedMaterial: {fileID: 2174747612671593054, guid: e5de0d7e8ef39be43aa3ac76d3e8a592, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -13546,7 +13554,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7188612997540162505}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}

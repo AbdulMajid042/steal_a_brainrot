@@ -1,10 +1,12 @@
 using AppsFlyerSDK;
 using Firebase.Analytics;
+using Firebase.Sample.Analytics;
 using GoogleMobileAds.Api;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Xml.Linq;
 using UnityEngine;
-using Firebase.Sample.Analytics;
 public enum AdLoadingStatus
 {
     NotLoaded,
@@ -289,6 +291,7 @@ public class Ads_Manager : MonoBehaviour
         }
         LoadMediumBanner();
         LoadInterstitial();
+        //Admob
         InitializeAdmob();
     }
 
@@ -475,11 +478,15 @@ public class Ads_Manager : MonoBehaviour
                 new Firebase.Analytics.Parameter("currency", "USD"), // All Applovin revenue is sent in USD
         };
 
-        Debug.LogError("Format:"+ impressionData.AdFormat+" Netwok:" + impressionData.NetworkName + " rev:" + revenue+" ID:"+ impressionData.AdUnitIdentifier);
 
         //if (FbAnalytics.Instance.firebaseInitialized)
         {
             Firebase.Analytics.FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
+        }
+
+        if (GRS_FirebaseHandler.Instance)
+        {
+            GRS_FirebaseHandler.Instance.DesignEvent("Max:" + adUnitId);
         }
 
         Dictionary<string, string> additionalParams = new Dictionary<string, string>();
@@ -543,8 +550,6 @@ public class Ads_Manager : MonoBehaviour
                 new Firebase.Analytics.Parameter("currency", "USD"), // All Applovin revenue is sent in USD
         };
 
-        Debug.LogError("Format:" + impressionData.AdFormat + " Netwok:" + impressionData.NetworkName + " rev:" + revenue + " ID:" + impressionData.AdUnitIdentifier);
-
         //if (FbAnalytics.Instance.firebaseInitialized)
         {
             Firebase.Analytics.FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
@@ -559,7 +564,7 @@ public class Ads_Manager : MonoBehaviour
                                 "USD",
                                 additionalParams);
     }
-
+    //Admob
     private void OnAdmobAdRevenuePaidEvent(AdValue adValue, AdapterResponseInfo adapterInfo, string adUnitId, string AdName)
     {
         if (adValue == null || adapterInfo == null || string.IsNullOrEmpty(adUnitId))
@@ -579,7 +584,7 @@ public class Ads_Manager : MonoBehaviour
             new Parameter("currency", adValue.CurrencyCode)
         };
 
-        FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
+     //       FirebaseAnalytics.LogEvent("ad_impression", impressionParameters);
 
         Dictionary<string, string> additionalParams = new Dictionary<string, string>();
         additionalParams.Add(AFAdRevenueEvent.AD_UNIT, adUnitId);
@@ -1280,6 +1285,7 @@ public class Ads_Manager : MonoBehaviour
 
     #region Initialize Admob
 
+    //Admob
     void InitializeAdmob()
     {
         MobileAds.Initialize((initStatus) =>
@@ -1325,9 +1331,10 @@ public class Ads_Manager : MonoBehaviour
                     }
                     if (isAdmobAppOpen && PlayerPrefs.GetInt("RemoveAds")==0)
                     {
+                        //Admob
                         LoadAdmobAppOpenAd();
                     }
-
+                    //Admob
                     LoadAdmobInterstitial();
                 }
             }
@@ -1610,7 +1617,7 @@ public class Ads_Manager : MonoBehaviour
         else
             return false;
     }
-
+    //Admob
     public void LoadAdmobInterstitial()
     {
         if (!isAdmobInitialized || IsInterstitialAdReady() || iAdStatus == AdLoadingStatus.Loading || adsStatus == AdType.NoAds)
@@ -1629,6 +1636,7 @@ public class Ads_Manager : MonoBehaviour
         }
     }
 
+    //Admob
     public void LoadInterAd(string ID)
     {
         // Clean up interstitial before using it
@@ -1685,6 +1693,7 @@ public class Ads_Manager : MonoBehaviour
                     Debug.Log("GG >> Admob:Interstitial Ad failed to show with error: " +
                                 error.GetMessage());
                 };
+                //Admob
                 ad.OnAdPaid += (AdValue adValue) =>
                 {
                     string msg = string.Format("{0} (currency: {1}, value: {2}",
@@ -1838,7 +1847,7 @@ public class Ads_Manager : MonoBehaviour
                                                adValue.Value);
 
                     Debug.Log(msg);
-
+                    //Admob
                     var responseInfo = ad.GetResponseInfo();
                     OnAdmobAdRevenuePaidEvent(adValue, responseInfo.GetLoadedAdapterResponseInfo(), ID, "AppOpen");
                 };
