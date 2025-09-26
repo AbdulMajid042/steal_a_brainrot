@@ -34,14 +34,20 @@ public class StealrotAIExtension : MonoBehaviour
     public bool isCarrying = false;   // NEW: persistent check if AI is currently carrying an object
     public bool AIinsideHouse = false;
 
+    public float timeToDeactiveBrainrot;
+
     void Start()
     {
         ai = GetComponent<vSimpleMeleeAI_Controller>();
 
-        if (carryPoint.transform.childCount >= 1)
+        if (GetComponentInChildren<Brainrot>())
         {
             isCarrying = true;
+            targetBrainrot = GetComponentInChildren<Brainrot>();
+            ThrowBrainrotForcefully();
         }
+
+
     }
 
     void Update()
@@ -104,7 +110,7 @@ public class StealrotAIExtension : MonoBehaviour
                 if (dist < houseDetectionRadius)
                 {
                     GoToHouse();
-                    hasVisitedHouse = true;
+                    //hasVisitedHouse = true;
                 }
             }
             else if (Lock.activeSelf)
@@ -119,6 +125,7 @@ public class StealrotAIExtension : MonoBehaviour
     {
         if (other.gameObject.CompareTag("inside"))
         {
+            hasVisitedHouse = true;
             AIinsideHouse = true;
             if (Lock.activeSelf)
             {
@@ -140,6 +147,7 @@ public class StealrotAIExtension : MonoBehaviour
         {
             AIinsideHouse = false;
             temp = false;
+            hasVisitedHouse = false;
         }
     }
 
@@ -152,6 +160,8 @@ public class StealrotAIExtension : MonoBehaviour
 
     public void GoToHouse()
     {
+        if (Lock.activeSelf)
+            return;
         if (ai == null || AIStealingManager.instance.houseObjects.Count == 0) return;
         if (playerHouseLock != null && Lock != null && Lock.activeSelf) return;
 
@@ -169,7 +179,7 @@ public class StealrotAIExtension : MonoBehaviour
         ai.SetCurrentTarget(AIStealingManager.instance.houseObjects[0].transform);
         ai.currentState = AIStates.Chase;
     }
-
+    float tempTime;
     void PerformSteal()
     {
         if (targetBrainrot == null) return;
@@ -178,8 +188,37 @@ public class StealrotAIExtension : MonoBehaviour
         isCarrying = true;  //  AI is now carrying something
         AIStealingManager.instance.AIStealBrainrot(targetBrainrot, carryPoint ? carryPoint : transform,gameObject.name);
         Debug.Log($"{gameObject.name} stole {targetBrainrot.name}");
+        ResetTime();
+        Invoke("DecreaseTime", 1);
     }
-
+    public void ResetTime()
+    {
+        tempTime = timeToDeactiveBrainrot;
+    }
+    void DecreaseTime()
+    {
+        tempTime--;
+        if(tempTime==0)
+        {
+            ThrowBrainrotForcefully();
+        }
+        Invoke("DecreaseTime", 1);
+    }
+    void ThrowBrainrotForcefully()
+    {
+        if (!isCarrying)
+            return;
+        isCarrying = false;
+        if (targetBrainrot)
+        {
+            Destroy(targetBrainrot.gameObject);
+        //    targetBrainrot.gameObject.SetActive(false);
+        }
+        targetBrainrot = null;
+        HasVisitedReset();
+        CancelInvoke("DecreaseTime");
+        tempTime = timeToDeactiveBrainrot;
+    }
     public void DropCarriedObject()
     {
         // Call this when AI loses or drops the stolen object

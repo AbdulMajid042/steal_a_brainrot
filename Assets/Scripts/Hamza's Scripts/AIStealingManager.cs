@@ -69,8 +69,7 @@ public class AIStealingManager : MonoBehaviour
     {
         obj.isStolen = true;
     }
-
-    public void AIStealBrainrot(Brainrot target, Transform aiCarryPoint,string name)
+    public void AIStealBrainrot(Brainrot target, Transform aiCarryPoint, string name)
     {
         if (target == null) return;
 
@@ -88,7 +87,7 @@ public class AIStealingManager : MonoBehaviour
         target.moneyGeneratedCollider.SetActive(false);
         target.triggerCollider.SetActive(true);
         target.EnableTriggerCollider(true);
-       // Player.instance.stolen.GetComponentInChildren<Collider>().enabled = true;
+        // Player.instance.stolen.GetComponentInChildren<Collider>().enabled = true;
         //target.gameObject.GetComponent<Brainrot>().enabled = false;
         // Parent under AI's carrying point
         target.transform.parent = aiCarryPoint;
@@ -105,5 +104,4 @@ public class AIStealingManager : MonoBehaviour
         }
         Debug.Log($"[AIStealingManager] AI stole object: {target.name}");
     }
-
 }

@@ -449,12 +449,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 825035566505390356, guid: b038ca89d1001dd498bf39b2c03014a2, type: 3}
+      propertyPath: isAdmobBanner
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 825035566505390356, guid: b038ca89d1001dd498bf39b2c03014a2, type: 3}
       propertyPath: _BannerPosition
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 825035566505390356, guid: b038ca89d1001dd498bf39b2c03014a2, type: 3}
+      propertyPath: _AdmobBannerSize
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 825035566505390356, guid: b038ca89d1001dd498bf39b2c03014a2, type: 3}
       propertyPath: _BannerPosition2
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 825035566505390356, guid: b038ca89d1001dd498bf39b2c03014a2, type: 3}
+      propertyPath: drainrot_needBanner
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 825035566505390356, guid: b038ca89d1001dd498bf39b2c03014a2, type: 3}
+      propertyPath: ADMOB_ID.ADMOB_BANNER_AD_ID
+      value: ca-app-pub-6263347419612757/9808439079
       objectReference: {fileID: 0}
     - target: {fileID: 3667533996258702205, guid: b038ca89d1001dd498bf39b2c03014a2, type: 3}
       propertyPath: m_LocalPosition.x

@@ -89,7 +89,7 @@ public class Lock : MonoBehaviour
             else
                 durationToShow.text = "Locked\n\n" + $"{seconds} s";
 
-            if (minutes == 0 && seconds < 11)
+            if (minutes == 0 && seconds < 6)
             {
                 if(temp)
                 {
@@ -104,7 +104,10 @@ public class Lock : MonoBehaviour
                 UIManager.instance.baseUnlockedMessageText.gameObject.SetActive(false);
                 UIManager.instance.baseUnlockedMessageText.gameObject.SetActive(true);
                 UIManager.instance.baseUnlockedMessageText.text = "Your base is " + "<color=red>" + "Unlocked!" + "</color>";
+                if (freeLockObject)
+                    freeLockObject.SetActive(true);
             }
+            
 
             yield return new WaitForSeconds(1f); // update every second
         }
@@ -120,8 +123,13 @@ public class Lock : MonoBehaviour
         }
         else
         {
+            parentObject.SetActive(true);
+            GetComponent<Collider>().enabled = true;
             MyHouse.instance.myHouseLock.SetActive(false);
-            gameObject.SetActive(false);
+            durationToShow.gameObject.SetActive(false);
+            circleImage.fillAmount = 0f;
+            //MyHouse.instance.myHouseLock.SetActive(false);
+            //gameObject.SetActive(false);
         }
         Invoke("MakeTempTrue", 10f);
     }

@@ -110,7 +110,7 @@ public class Brainrot : MonoBehaviour
 
     private void Update()
     {
-        if (frameCounter % 3 == 0)
+        if (frameCounter % 2 == 0)
         {
             #region for Not AI Brainrots
             if (!isAI)
@@ -292,7 +292,7 @@ public class Brainrot : MonoBehaviour
     }
     void StartGeneratingMoney()
     {
-        if (GetComponent<BuyThisCharacter>())
+        if (GetComponent<BuyThisCharacter>() || isStolen)
         {
             transform.localEulerAngles = pointC.eulerAngles;
         }

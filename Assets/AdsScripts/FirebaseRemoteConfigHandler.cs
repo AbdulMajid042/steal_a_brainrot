@@ -48,7 +48,9 @@ namespace Firebase.Sample.Analytics
                 //InitFirebaseRemoteConfig();
             }
             //Invoke(nameof(Init_Helper), 4);
-            //InitFirebaseRemoteConfig();
+
+            Invoke("InitFirebaseRemoteConfig", 2f);
+        //    InitFirebaseRemoteConfig();
         }
         public void InitFirebaseRemoteConfig()
         {

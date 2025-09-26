@@ -346,9 +346,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                     {
                         GameObject.FindObjectOfType<Menu>().DeActiveRemoveAds();
                     }
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                     WaitIAP();
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Saturnita)
@@ -357,9 +354,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                             GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockCharacter();
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Spiderini)
                 {
@@ -367,9 +361,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockCharacter();
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.LosTralaleritos)
                 {
@@ -377,9 +368,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockCharacter();
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.LasTralaleritos)
                 {
@@ -387,9 +375,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockCharacter();
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Medussi)
                 {
@@ -397,9 +382,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockCharacter();
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Combinasion)
                 {
@@ -407,9 +389,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockCharacter();
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Dinossauro)
                 {
@@ -417,9 +396,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockCharacter();
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Madundung)
                 {
@@ -427,9 +403,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockCharacter();
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Celestino)
                 {
@@ -437,14 +410,9 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                         GameObject.FindObjectOfType<CharacterUnlockPanel>().OnIAPSuccess();
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockCharacter();
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 if (nonConsumableSucceededInapp.inAppType == InAppItemName.Unlock_Everything)
                 {
-                    if (GRS_FirebaseHandler.Instance)
-                        GRS_FirebaseHandler.Instance.LogIAPPurchased("RemoveAds");
                     if (GameObject.FindObjectOfType<MemerotSelectionManager>())
                         GameObject.FindObjectOfType<MemerotSelectionManager>().UnlockAllCharacter();
                     if (GameObject.FindObjectOfType<AdminMemerot>())
@@ -458,10 +426,6 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                     WaitIAP();
 
                     PlayerPrefs.SetInt("UnlockEverything", 1);
-
-                    string currency = args.purchasedProduct.metadata.isoCurrencyCode;
-                    double price = (double)args.purchasedProduct.metadata.localizedPrice;
-                    Ads_Manager.instance.ReportInAppPurchase(args.purchasedProduct.definition.id, currency, price);
                 }
                 else if (nonConsumableSucceededInapp.inAppType == InAppItemName.Gun)
                 {
@@ -544,8 +508,9 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                 PlayerPrefs.SetInt("RemoveAds", 1);
                 Ads_Manager.instance.HideSmallBanner();
                 Ads_Manager.instance.HideSmallBanner2();
+                Ads_Manager.instance.HideAdmobSmallBanner();
                 Ads_Manager.instance.HideMediumBanner();
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 //if (GamePlay_GUI_Handler.instance) GamePlay_GUI_Handler.instance.OnRemoveAds();
                 //->AdmobAdsManager.IsInitilized = false;
                 //FindFirstObjectByType<AcknowledgementPanel>().ShowAcknowledgement(AcknowledgementPanel.AcknowledgementType.RemoveAds);
@@ -555,8 +520,11 @@ public class IAP_Manager : MonoBehaviour, IDetailedStoreListener
                 //PlayerPrefs.SetInt("RemoveAds", 1);
                 PlayerPrefs.SetInt("UnlockEverything", 1);
                 PlayerPrefs.SetInt("RemoveAds", 1);
-
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                Ads_Manager.instance.HideSmallBanner();
+                Ads_Manager.instance.HideSmallBanner2();
+                Ads_Manager.instance.HideAdmobSmallBanner();
+                Ads_Manager.instance.HideMediumBanner();
+            //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 //PlayerPrefManager.Instance.UnlockAllGuns();
                 //FindFirstObjectByType<AcknowledgementPanel>().ShowAcknowledgement(AcknowledgementPanel.AcknowledgementType.UnlockAllGuns);
                 break;

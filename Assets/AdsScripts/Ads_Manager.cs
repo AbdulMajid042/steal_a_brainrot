@@ -47,7 +47,7 @@ public class AdmobId
     [Header("Banner_Ad Id")]
     public string ADMOB_BANNER_AD_ID;
 
-    [Header("Banner_Ad Id")]
+    [Header("Interstitial_Ad Id")]
     public string ADMOB_INTERTITIAL_AD_ID;
 
     [Header("AppOpen_Ad Id")]
@@ -219,9 +219,11 @@ public class Ads_Manager : MonoBehaviour
         // Init MaxApplovin...............
 
                 InitializeMaxlovin();
-            
-        
+
+
         /*InitializeMaxlovin();*/
+
+    //    ShowBannerOfAdmobRecursively();
     }
 
     public void AdsCheck()
@@ -256,7 +258,7 @@ public class Ads_Manager : MonoBehaviour
                     if (!isAdmobBanner)
                     {
                         InitializeSmallBanner();
-                        InitializeSmallBanner2();
+                    //    InitializeSmallBanner2();
                         InitializeMediumBanner();
                     }
                 //    InitializeSmallBanner2();
@@ -279,6 +281,7 @@ public class Ads_Manager : MonoBehaviour
 
     public void LoadAllAds()
     {
+        Debug.Log("GG >> Admob:LoadAllAds");
         if (!isAdmobBanner)
         {
             LoadSmallBanner();
@@ -295,36 +298,6 @@ public class Ads_Manager : MonoBehaviour
         InitializeAdmob();
     }
 
-    #endregion
-    #region InApp Purchase Reporting
-
-    /// <summary>
-    /// Report in-app purchase revenue to Firebase and AppsFlyer
-    /// </summary>
-    /// <param name="productId">The purchased product ID (SKU)</param>
-    /// <param name="currency">Currency code (e.g. "USD")</param>
-    /// <param name="price">Price paid in that currency</param>
-    public void ReportInAppPurchase(string productId, string currency, double price)
-    {
-        Debug.Log($"[IAP REPORT] Product: {productId}, Price: {price} {currency}");
-
-        // --- Firebase Analytics ---
-        var purchaseParams = new[]
-        {
-        new Firebase.Analytics.Parameter(Firebase.Analytics.FirebaseAnalytics.ParameterCurrency, currency),
-        new Firebase.Analytics.Parameter(Firebase.Analytics.FirebaseAnalytics.ParameterValue, price),
-        new Firebase.Analytics.Parameter(Firebase.Analytics.FirebaseAnalytics.ParameterItemId, productId),
-        new Firebase.Analytics.Parameter("source", "inapp_purchase")
-    };
-        Firebase.Analytics.FirebaseAnalytics.LogEvent(Firebase.Analytics.FirebaseAnalytics.EventPurchase, purchaseParams);
-
-        // --- AppsFlyer (IAP revenue logging) ---
-        Dictionary<string, string> additionalParams = new Dictionary<string, string>();
-        additionalParams.Add(AFInAppEvents.REVENUE, price.ToString());
-        additionalParams.Add(AFInAppEvents.CURRENCY, currency);
-        additionalParams.Add(AFInAppEvents.CONTENT_ID, productId);
-        AppsFlyer.sendEvent(AFInAppEvents.PURCHASE, additionalParams);
-    }
     #endregion
     #region AppsFlyer Event Initilization
     public bool showEventBanner=true;
@@ -700,7 +673,7 @@ public class Ads_Manager : MonoBehaviour
         MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent -= OnAdRevenuePaidEventBanner2;
         MaxSdkCallbacks.Banner.OnAdRevenuePaidEvent += OnAdRevenuePaidEventBanner2;
 
-        LoadSmallBanner2();
+    //    LoadSmallBanner2();
     }
 
     public void LoadSmallBanner2()
@@ -1288,6 +1261,7 @@ public class Ads_Manager : MonoBehaviour
     //Admob
     void InitializeAdmob()
     {
+        Debug.Log("GG >> Admob:InitializeAdmob");
         MobileAds.Initialize((initStatus) =>
         {
             Debug.Log("GG >> Admob:Initialized");
@@ -1324,9 +1298,10 @@ public class Ads_Manager : MonoBehaviour
             {
                 if (PlayerPrefs.GetInt("RemoveAds") != 1)
                 {
-                    Debug.Log("......Load calls");
+                    Debug.Log("GG >> Admob:LoadingAds");
                     if (isAdmobBanner && PlayerPrefs.GetInt("RemoveAds") == 0)
                     {
+                        Debug.Log("GG >> Admob:BannerLoading");
                         LoadAdmobSmallBanner();
                     }
                     if (isAdmobAppOpen && PlayerPrefs.GetInt("RemoveAds")==0)
@@ -1361,6 +1336,7 @@ public class Ads_Manager : MonoBehaviour
                 {
                     if (isAdmobBanner)
                     {
+                        Debug.Log("GG >> Admob:BannerLoading2");
                         LoadAdmobSmallBanner();
                     }
 
@@ -1451,6 +1427,8 @@ public class Ads_Manager : MonoBehaviour
 
     public void LoadAdmobBannerAd(string ID)
     {
+        if (!drainrot_needBanner)
+            return;
         // Clean up banner before reusing
         if (banner != null)
         {
@@ -1466,6 +1444,7 @@ public class Ads_Manager : MonoBehaviour
             Debug.Log("GG >> Admob:smallBanner:Loaded.");
             smallBannerStatus = AdLoadingStatus.Loaded;
             isSmallBannerLoaded = true;
+            admobBannerShow = true;
             if (isShowBanner)
             {
                 banner.Show();
@@ -1512,7 +1491,16 @@ public class Ads_Manager : MonoBehaviour
         banner.LoadAd(request);
        
     }
-
+    bool admobBannerShow = false;
+    void ShowBannerOfAdmobRecursively()
+    {
+        if(admobBannerShow==false)
+        {
+            Invoke("ShowBannerOfAdmobRecursively", 3.0f);
+            ShowAdmobSmallBanner();
+            Debug.Log("GG >> Admob:Recursive");
+        }
+    }
     public void ShowAdmobSmallBanner(BannerPos position)
     {
         if (PlayerPrefs.GetInt("RemoveAds") == 1)
@@ -1526,7 +1514,7 @@ public class Ads_Manager : MonoBehaviour
             if (PlayerPrefs.GetInt("RemoveAds") != 1)
             {
                 
-                    SetBannerPos(position);
+            //        SetBannerPos(position);
                     Debug.Log("GG >> Admob:smallBanner:ShowCall");
                     if (IsBannerAdAvailable)
                     {

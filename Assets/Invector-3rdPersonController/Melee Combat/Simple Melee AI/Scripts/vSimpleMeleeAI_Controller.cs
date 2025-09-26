@@ -752,18 +752,27 @@ namespace Invector.vCharacterController.AI
             if (trailParticle)
                 trailParticle.SetActive(true);
 
-            if (this.gameObject.GetComponent<StealrotAIExtension>())        //yo
+            if (gameObject.GetComponent<StealrotAIExtension>())        //yo
             {
-                if (this.gameObject.GetComponent<StealrotAIExtension>().isCarrying)
+                if (gameObject.GetComponent<StealrotAIExtension>().isCarrying)
                 {
                     Debug.Log("HIT ");
-                    GameObject Stolenbraintrot = this.gameObject.GetComponentInChildren<Brainrot>().gameObject;
-                    Player.instance.stolen = Stolenbraintrot;
+                    GameObject Stolenbraintrot = GetComponentInChildren<Brainrot>().gameObject;
+                //    Player.instance.stolen = Stolenbraintrot;
 
                     UIManager.instance.StealBrainFromAI(Stolenbraintrot);
-                    this.gameObject.GetComponent<StealrotAIExtension>().isCarrying = false;
+                    if (Stolenbraintrot)
+                    {
+                        Stolenbraintrot.transform.parent = null;
+                        Stolenbraintrot.GetComponent<Brainrot>().PlaceToAvailablePlace();
+                        Stolenbraintrot.GetComponent<Brainrot>().inmyhouse = true;   //yo
+                        Stolenbraintrot.GetComponent<Brainrot>().isStolen = true;
+                        Stolenbraintrot.GetComponentInChildren<Collider>().enabled = false;
+                    }
+                    GetComponent<StealrotAIExtension>().hasVisitedHouse = false;
+                    GetComponent<StealrotAIExtension>().isCarrying = false;
+                    GetComponent<StealrotAIExtension>().ResetTime();
                 }
-
             }
         }
         public void ThrowThisAI()
@@ -771,6 +780,7 @@ namespace Invector.vCharacterController.AI
             if(GameObject.Find("MidPoint"))
             {
                 transform.position = GameObject.Find("MidPoint").transform.position;
+                GetComponent<StealrotAIExtension>().hasVisitedHouse = false;
             }
         }
 

@@ -42,6 +42,9 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
+#if UNITY_EDITOR
+        idleAdTime = 3600;
+#endif
         if (Ads_Manager.instance)
             ads = Ads_Manager.instance;
 
@@ -186,12 +189,12 @@ public class UIManager : MonoBehaviour
         Player.instance.carriedBrainrot = true;
         Obj.GetComponentInChildren<Collider>().enabled = false;
         Obj.GetComponentInChildren<Brainrot>().isStolen = true;
-        Obj.transform.parent = Player.instance.stolenBrainrotsTransform;
-        Obj.transform.localPosition = Vector3.zero;
-        Obj.transform.localEulerAngles = Vector3.zero;
+    //    Obj.transform.parent = Player.instance.stolenBrainrotsTransform;
+    //    Obj.transform.localPosition = Vector3.zero;
+    //    Obj.transform.localEulerAngles = Vector3.zero;
         Obj.GetComponent<Brainrot>().isStolenbyAI = false;
         Obj.GetComponentInChildren<Brainrot>().PlayerTookBack = true;
-        Obj.GetComponent<StealrotAIExtension>().DropCarriedObject();
+    //    Obj.GetComponent<StealrotAIExtension>().DropCarriedObject();
     }
     public void UnlockHouse()
     {
