@@ -1,7 +1,8 @@
+using Firebase.Sample.Analytics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Firebase.Sample.Analytics;
+using static UnityEngine.GraphicsBuffer;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
@@ -16,7 +17,7 @@ public class UIManager : MonoBehaviour
     public GameObject notEnoughMoney;
     public GameObject coinAttraction;
     public Image lockCircle;
-    public Text stealingText, stolenText;
+    public Text stealingText, stolenText,baseUnlcokingMessageText,baseUnlockedMessageText;
 
     [Header("           Ads Panel. References")]
     public GameObject likeAdsPanel;

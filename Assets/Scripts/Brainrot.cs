@@ -68,7 +68,13 @@ public class Brainrot : MonoBehaviour
         {
             moneyGenerationValue = (long)(moneyGenerationValue * 1.25f);
         }
-        SetStat();
+        if (transform.childCount > 0)
+            SetStat();
+        else
+        {
+            Destroy(gameObject);
+        }
+
         SetPoints();
         SetCamera();
         if (particle)
@@ -123,7 +129,8 @@ public class Brainrot : MonoBehaviour
                 if (animator)
                     animator.SetBool("IsMove", false);
             }
-            generatedMoneyText.text = "$" + generatedMoney.ToString();
+            if(generatedMoneyText)
+                generatedMoneyText.text = "$" + generatedMoney.ToString();
             #endregion
         }
         frameCounter++;

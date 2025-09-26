@@ -311,10 +311,11 @@ namespace Invector.vCharacterController.AI
         {
             if (!agent.enabled && agent.updatePosition)
             {
-                return true;
+                return false;
             }
 
-            return !agent.pathPending && AgentStopping() && agent.updatePosition;
+            //    return !agent.pathPending && AgentStopping() && agent.updatePosition;
+            return false;
         }
 
         public bool AgentStopping()

@@ -143,13 +143,14 @@ namespace Invector.vCharacterController.AI
         {
             if (AgentDone() && agent.updatePosition || lockMovement)
             {
-                agent.speed = 0f;
-                combatMovement = Vector3.zero;
+                //agent.speed = 0f;
+                //combatMovement = Vector3.zero;
+            //    Debug.LogError(AgentDone() + " "+ agent.updatePosition +" "+lockMovement);
             }
             if (agent.isOnOffMeshLink)
             {
                 float speed = agent.desiredVelocity.magnitude;
-                UpdateAnimator(AgentDone() ? 0f : speed, direction);
+                UpdateAnimator(3, direction);
             }
             else
             {

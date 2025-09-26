@@ -1,6 +1,5 @@
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,7 +44,7 @@ public class Lock : MonoBehaviour
             UnlockMethod();
         else
         {
-            if(Ads_Manager.instance)
+            if (Ads_Manager.instance)
             {
                 Ads_Manager.instance.ShowRewardedVideo(UnlockMethod);
             }
@@ -74,7 +73,7 @@ public class Lock : MonoBehaviour
         StartCoroutine(LockAgain());
 
     }
-
+    bool temp = true;
     IEnumerator LockAgain()
     {
         // Countdown
@@ -89,6 +88,23 @@ public class Lock : MonoBehaviour
                 durationToShow.text = "Locked\n\n" + $"{minutes} m {seconds} s";
             else
                 durationToShow.text = "Locked\n\n" + $"{seconds} s";
+
+            if (minutes == 0 && seconds < 11)
+            {
+                if(temp)
+                {
+                    UIManager.instance.baseUnlcokingMessageText.gameObject.SetActive(false);
+                    UIManager.instance.baseUnlcokingMessageText.gameObject.SetActive(true);
+                    temp = false;
+                }
+                UIManager.instance.baseUnlcokingMessageText.text = "Your base is unlocking in " + "<color=red>" + seconds + " sec" + "</color>";
+            }
+            if (minutes==0 && seconds < 1)
+            {
+                UIManager.instance.baseUnlockedMessageText.gameObject.SetActive(false);
+                UIManager.instance.baseUnlockedMessageText.gameObject.SetActive(true);
+                UIManager.instance.baseUnlockedMessageText.text = "Your base is " + "<color=red>" + "Unlocked!" + "</color>";
+            }
 
             yield return new WaitForSeconds(1f); // update every second
         }
@@ -107,6 +123,11 @@ public class Lock : MonoBehaviour
             MyHouse.instance.myHouseLock.SetActive(false);
             gameObject.SetActive(false);
         }
+        Invoke("MakeTempTrue", 10f);
+    }
 
+    void MakeTempTrue()
+    {
+        temp = true;
     }
 }
